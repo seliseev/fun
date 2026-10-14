@@ -1,0 +1,20 @@
+[project]
+title = fun
+dependencies#0 = https://github.com/britzl/monarch/archive/master.zip
+dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/21.zip
+dependencies#2 = https://github.com/Insality/defold-saver/archive/refs/tags/5.zip
+dependencies#3 = https://github.com/Insality/defold-tweener/archive/refs/tags/6.zip
+dependencies#4 = https://github.com/britzl/stately/archive/refs/heads/master.zip
+dependencies#5 = https://github.com/indiesoftby/defold-yagames/archive/refs/tags/0.19.0.zip
+dependencies#6 = https://github.com/Insality/druid/archive/refs/tags/1.4.0.zip
+dependencies#7 = https://github.com/Insality/defold-token/archive/refs/tags/9.zip
+
+[library]
+include_dirs = fun
+
+[bootstrap]
+main_collection = /fun/fun.collectionc
+
+[script]
+shared_state = 1
+

@@ -1,0 +1,32 @@
+local fun = require("fun.fun")
+
+local function on_fun_inited(self)
+	self.update = fun.update
+	self.on_message = fun.on_message
+	self.final = fun.final
+end
+
+function init(self)
+
+	fun.on_fun_inited:subscribe(on_fun_inited, self)
+	
+	timer.delay(0, false, function()
+		fun.init()
+	end)
+
+	self.final = function () end
+	self.update = function (dt) end
+	self.on_message = function (message_id, message, sender) end
+end
+
+function final(self)
+	self.final()
+end
+
+function update(self, dt)
+	self.update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.on_message(message_id, message, sender)
+end
