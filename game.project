@@ -14,7 +14,3 @@ include_dirs = fun
 
 [bootstrap]
 main_collection = /fun/fun.collectionc
-
-[script]
-shared_state = 1
-
