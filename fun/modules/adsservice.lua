@@ -813,6 +813,10 @@ function M.fun_init()
 end
 
 function M.fun_post_init()
+    --- Перечитываем конфиг: segmentation мог пересчитать когорту в своем fun_post_init,
+    --- а на SEGMENTATION_COHORT_CHANGED мы подписываемся только ниже
+    init_config()
+
     M.banner_stately.start(M.banner_states.init)
     
     --- Подписка на события ads модуля

@@ -157,14 +157,18 @@ function M.get_cohort()
         return "default"
     end
 
-    if not M.state.cohort then
-        return M.update_cohort()
-    end
     return M.state.cohort
 end
 
 function M.fun_init()
     saver.bind_save_state("fun.segmentation", M.state)
+
+    -- При первом запуске когорты в сохранении нет, а adsservice и levelchest запрашивают её в своих fun_init.
+    -- Сохраненную когорту не пересчитываем: правила когорт регистрируются в fun_init других модулей,
+    -- финальный пересчет будет в fun_post_init
+    if not M.state.cohort then
+        M.update_cohort()
+    end
 end
 
 function M.fun_post_init()
