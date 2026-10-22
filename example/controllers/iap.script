@@ -1,0 +1,82 @@
+--- IAP Controller
+--- Слушает все события покупки. В момент старта покупки показывает экран загрузки.
+--- В момент завершения покупки прячет экран загрузки и показывает popup с ошибкой если покупка не успешна.
+--- Если покупка успешна, показывает ревард окно.
+
+local monarch = require("monarch.monarch")
+local iapservice = require("fun.modules.iapservice")
+local game_const = require("example.const")
+
+
+local TEXT_KEY_IAP_FAILED_HEADER 		= "popup.iap.purchase.failed.title"
+local TEXT_KEY_IAP_FAILED_DESCRIPTION 	= "popup.iap.purchase.failed.description"
+local TEXT_KEY_IAP_FAILED_BUTTON 		= "popup.iap.purchase.failed.button"
+
+local TEXT_KEY_IAP_SUCCESS_HEADER 		= "popup.iap.purchase.success.title"
+local TEXT_KEY_IAP_SUCCESS_SUBHEADER 	= "popup.iap.purchase.success.subheader"
+
+local TEXT_KEY_IAP_CANCELLED_HEADER 	= "popup.iap.purchase.cancelled.title"
+local TEXT_KEY_IAP_CANCELLED_DESCRIPTION 	= "popup.iap.purchase.cancelled.description"
+local TEXT_KEY_IAP_CANCELLED_BUTTON 	= "popup.iap.purchase.cancelled.button"
+
+
+local function on_iapservice_purchase_start(self, lot, transaction)
+    monarch.show(game_const.MONARCH_SCENES.LOADING)
+end
+
+
+--- Универсальный обработчик завершения покупки, прячет экран загрузки и показывает popup с ошибкой если покупка не успешна
+---@param self any
+---@param success boolean
+---@param lot fun.iapservice.lot|nil
+---@param transaction fun.iap.transaction
+---@param error table|nil
+local function on_iapservice_purchase_end(self, success, lot, transaction, error)
+	--- Используем monarch.replace(), чтобы закрыть game_const.MONARCH_SCENES.LOADING 
+	--- таким образом фокус не уйдёт на экран который был под экраном загрузки.
+
+	-- Если платёж не успешный показываем попап с ошибкой
+	if not success or not lot then
+		monarch.replace(game_const.MONARCH_SCENES.POPUP_ONE_BUTTON, nil, {
+			title_text_key = TEXT_KEY_IAP_FAILED_HEADER,
+			description_text_key = TEXT_KEY_IAP_FAILED_DESCRIPTION,
+			button_text_key = TEXT_KEY_IAP_FAILED_BUTTON,
+			button_callback = function()
+				monarch.hide(game_const.MONARCH_SCENES.POPUP_ONE_BUTTON)
+			end
+		})
+		return
+	end
+
+	-- Показываем ревард окно, закроется автоматически через "back" по тапу игрока
+	monarch.replace(game_const.MONARCH_SCENES.REWARD, nil, {
+		reward = lot.reward,
+		header_text_key = TEXT_KEY_IAP_SUCCESS_HEADER,
+		subheader_text_key = TEXT_KEY_IAP_SUCCESS_SUBHEADER,
+		auto_sync_visual = true
+	})
+end
+
+
+local function on_iapservice_purchase_cancelled(self)
+	monarch.replace(game_const.MONARCH_SCENES.POPUP_ONE_BUTTON, nil, {
+		title_text_key = TEXT_KEY_IAP_CANCELLED_HEADER,
+		description_text_key = TEXT_KEY_IAP_CANCELLED_DESCRIPTION,
+		button_text_key = TEXT_KEY_IAP_CANCELLED_BUTTON,
+		button_callback = function()
+			monarch.hide(game_const.MONARCH_SCENES.POPUP_ONE_BUTTON)
+		end
+	})
+end
+
+function init(self)
+    iapservice.on_purchase_start:subscribe(on_iapservice_purchase_start, self)
+    iapservice.on_purchase_end:subscribe(on_iapservice_purchase_end, self)
+	iapservice.on_purchase_cancelled:subscribe(on_iapservice_purchase_cancelled, self)
+end
+
+function final(self)
+	iapservice.on_purchase_start:unsubscribe(on_iapservice_purchase_start, self)
+	iapservice.on_purchase_end:unsubscribe(on_iapservice_purchase_end, self)
+	iapservice.on_purchase_cancelled:unsubscribe(on_iapservice_purchase_cancelled, self)
+end

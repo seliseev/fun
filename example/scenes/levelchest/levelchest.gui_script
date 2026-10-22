@@ -1,0 +1,133 @@
+local monarch = require("monarch.monarch")
+local druid = require("druid.druid")
+local druid_const = require("druid.const")
+local druid_progress = require("druid.extended.progress")
+local tweener = require("tweener.tweener")
+
+
+local lang = require("fun.modules.lang")
+local levelchest = require("fun.modules.levelchest")
+
+local widget_monarch_focus_listener = require("example.widgets.monarch_focus_listener")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+local game_const = require("example.const")
+local logger = require("fun.libs.log").get_logger("levelchest.gui_script")
+
+--- Localization keys
+local TEXT_KEY_TITLE = "levelchest.title"
+local TEXT_KEY_DESCRIPTION = "levelchest.description"
+local TEXT_KEY_BUTTON = "levelchest.button"
+local TEXT_KEY_REWARD_HEADER = "levelchest.reward.header"
+local TEXT_KEY_REWARD_SUBHEADER = "levelchest.reward.subheader"
+
+
+local function show_reward(self)
+	local last_chest = levelchest.get_last_not_rewarded()
+	if not last_chest then
+		logger:warn("No last chest found to show rewards")
+		return
+	end
+
+	last_chest:reward_it()
+
+	--- @type game.scenes.reward.data
+    local data = {
+		reward = last_chest:get_reward_group(),
+		auto_sync_visual = true,
+		header_text_key = TEXT_KEY_REWARD_HEADER,
+		subheader_text_key = TEXT_KEY_REWARD_SUBHEADER
+	}
+	monarch.show(game_const.MONARCH_SCENES.REWARD, nil, data)
+end
+
+
+local function reload_chest(self)
+	logger:info("reload_chest")
+
+	self.chest = levelchest.get_last_not_rewarded()
+	if not self.chest then
+		logger:warn("No chest found to reload")
+		return
+	end
+
+	self.progress:set_to(self.chest:get_last_seen_value() / self.chest:get_goal())
+	self.text:set_text(string.format("%d/%d", self.chest:get_last_seen_value(), self.chest:get_goal()))
+
+	-- Если визуальное значение меньше, чем текущее значение, то анимируем прогресс бар
+	if self.chest:get_last_seen_value() < self.chest:get_value() then
+		tweener.tween(tweener.linear, self.chest:get_last_seen_value(), self.chest:get_value(), 0.5, function (value, is_final_call)
+			self.progress:set_to(value / self.chest:get_goal())
+			self.chest:set_last_seen_value(math.floor(value))
+
+			self.text:set_text(string.format("%d/%d", self.chest:get_last_seen_value(), self.chest:get_goal()))
+
+			if is_final_call and self.chest:is_full() then
+				show_reward(self)
+			end
+		end)
+	elseif self.chest:is_full() then
+		show_reward(self)
+	end
+
+	self.description:set_text(lang.txp(TEXT_KEY_DESCRIPTION, tostring((self.chest:get_goal() - self.chest:get_value()))))
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	--- @type druid.instance
+	self.druid = druid.new(self)
+	self.chest = levelchest.get_last_not_rewarded()
+	if not self.chest then
+		logger:warn("No chest found to display")
+		monarch.back()
+		return
+	end
+
+	------- ЗАГОЛОВОК --------
+	--- @type druid.lang_text
+	self.title = self.druid:new_lang_text("title", TEXT_KEY_TITLE)
+	
+	------- КНОПКА "Назад" --------
+	--- @type druid.button
+	self.button_continue = self.druid:new_button("continue/button", function()
+		monarch.back()
+	end)
+	self.back_handler = self.druid:new_back_handler(function()
+		monarch.back()
+	end)
+	self.button_continue_text = self.druid:new_lang_text("continue/text", TEXT_KEY_BUTTON)
+
+	------- MONARCH -------
+	--- @type widget.monarch_transition
+	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.LEVEL_CHEST)
+	self.monarch_focus_listener = self.druid:new_widget(widget_monarch_focus_listener, nil, nil, game_const.MONARCH_SCENES.LEVEL_CHEST)
+	self.monarch_focus_listener.on_focus_gained:subscribe(reload_chest, self)
+
+	------- ПРОГРЕСС БАР СУНДУКА --------
+	self.progress = self.druid:new(druid_progress, "progress/fill", druid_const.SIDE.X)
+	self.progress:set_to(self.chest:get_last_seen_value() / self.chest:get_goal())
+	
+	self.text = self.druid:new_text("progress/text")
+	--- @type druid.rich_text
+	self.description = self.druid:new_rich_text("description")
+
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+

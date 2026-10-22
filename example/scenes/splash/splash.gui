@@ -1,0 +1,30 @@
+textures {
+  name: "loading"
+  texture: "/example/assets/loading.atlas"
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  type: TYPE_BOX
+  texture: "loading/splash_background"
+  id: "background"
+  adjust_mode: ADJUST_MODE_STRETCH
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "loading/logo_fun"
+  id: "logo"
+  parent: "background"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

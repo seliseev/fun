@@ -1,0 +1,157 @@
+local log = require("fun.libs.log")
+local event = require("event.event")
+local fun = require("fun.fun")
+
+---@class scripts.loader
+---@field state string Текущее состояние: "splash", "loading", "game"
+---@field splash_timer_ready boolean Готовность перехода от splash (таймер завершен)
+---@field loading_timer_ready boolean Готовность перехода от loading (таймер завершен)
+---@field fun_pre_init_ready boolean Модуль lang инициализирован
+---@field fun_init_ready boolean Fun полностью инициализирован
+---@field game_loaded_ready boolean Игра загружена
+---@field game_proxy_loaded boolean Прокси игры загружен (ресурсы)
+
+--- Инициализация логгера
+---@param self scripts.loader
+local function init_logger(self)
+	event.set_logger(log.get_logger("event"))
+end
+
+--- Проверяет условия и выполняет переходы между состояниями
+---@param self scripts.loader
+local function try_transition(self)
+	-- Переход: splash -> game (пропускаем loading, если все готово)
+	-- Условия: splash_timer_ready, fun_pre_init_ready, game_loaded_ready и fun_init_ready
+	if self.state == "splash" and self.splash_timer_ready and self.fun_pre_init_ready 
+		and self.game_loaded_ready and self.fun_init_ready then
+		self.state = "game"
+		msg.post("#game_proxy", "enable")
+		msg.post("splash", "disable")
+		msg.post("loading", "disable")
+		return
+	end
+	
+	-- Переход: splash -> loading
+	-- Условия: splash_timer_ready и fun_pre_init_ready
+	if self.state == "splash" and self.splash_timer_ready and self.fun_pre_init_ready then
+		self.state = "loading"
+		msg.post("loading", "enable")
+		msg.post("splash", "disable")
+		
+		-- Запускаем таймер для loading экрана
+		timer.delay(2, false, function(_, handle, time_elapsed)
+			self.loading_timer_ready = true
+			try_transition(self)
+		end)
+		return
+	end
+	
+	-- Переход: loading -> game
+	-- Условия: loading_timer_ready, game_loaded_ready и fun_init_ready
+	if self.state == "loading" and self.loading_timer_ready and self.game_loaded_ready and self.fun_init_ready then
+		self.state = "game"
+		msg.post("#game_proxy", "enable")
+		msg.post("splash", "disable")
+		msg.post("loading", "disable")
+		return
+	end
+end
+
+--- Показывает Splash экран
+---@param self scripts.loader
+local function show_splash(self)
+	if self.state == "" then
+		self.state = "splash"
+		msg.post("splash", "enable")
+		msg.post("loading", "disable")
+		
+		-- Запускаем таймер для splash экрана
+		timer.delay(2, false, function(_, handle, time_elapsed)
+			self.splash_timer_ready = true
+			try_transition(self)
+		end)
+	end
+end
+
+---@param self scripts.loader
+local function load_fun_collection(self)
+	msg.post("#fun_proxy", "async_load")
+end
+
+local function load_game_collection(self)
+	msg.post("#game_proxy", "async_load")
+end
+
+
+local function fun_register_modules(self)
+	fun.register_module("level_manager", require("example.modules.level_manager"))
+	fun.register_module("iconfinder", require("example.modules.iconfinder"))
+	fun.register_module("cohorts", require("example.modules.cohorts"))
+
+	fun.on_module_pre_inited:subscribe(function(module_name)
+		if module_name == "lang" then
+			self.fun_pre_init_ready = true
+			try_transition(self)
+		end
+	end)
+
+	fun.on_fun_inited:subscribe(function()
+		self.fun_init_ready = true
+
+		-- Если игра уже загружена, инициализируем её только после полной инициализации FUN
+		if self.game_proxy_loaded and not self.game_loaded_ready then
+			msg.post("#game_proxy", "init")
+			self.game_loaded_ready = true
+		end
+
+		try_transition(self)
+	end)
+end
+
+---@param self scripts.loader
+function init(self)
+	-- Инициализация состояний
+	self.state = ""
+	self.splash_timer_ready = false
+	self.loading_timer_ready = false
+	self.fun_pre_init_ready = false
+	self.fun_init_ready = false
+	self.game_loaded_ready = false
+	self.game_proxy_loaded = false
+
+	init_logger(self)
+	fun_register_modules(self)
+
+	-- Load fun and game collections
+	load_fun_collection(self)
+	load_game_collection(self)
+
+	-- Показываем splash экран
+	show_splash(self)
+
+	msg.post(".", "acquire_input_focus")
+end
+
+
+---@param self scripts.loader
+---@param message_id hash
+---@param message table
+---@param sender url
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		if sender.fragment == hash("fun_proxy") then
+			-- FUN должен инициализироваться как можно раньше
+			msg.post(sender, "init")
+			msg.post(sender, "enable")
+		elseif sender.fragment == hash("game_proxy") then
+			-- Игра загружается асинхронно, но инициализируется только после FUN
+			self.game_proxy_loaded = true
+
+			if self.fun_init_ready and not self.game_loaded_ready then
+				msg.post(sender, "init")
+				self.game_loaded_ready = true
+				try_transition(self)
+			end
+		end
+	end
+end

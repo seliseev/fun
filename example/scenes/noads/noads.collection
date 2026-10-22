@@ -1,0 +1,10 @@
+name: "noads"
+scale_along_z: 0
+embedded_instances {
+  id: "noads"
+  data: "components {\n"
+  "  id: \"noads\"\n"
+  "  component: \"/example/scenes/noads/noads.gui\"\n"
+  "}\n"
+  ""
+}

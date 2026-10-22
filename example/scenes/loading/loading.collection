@@ -1,0 +1,10 @@
+name: "m"
+scale_along_z: 0
+embedded_instances {
+  id: "monarch"
+  data: "components {\n"
+  "  id: \"loading\"\n"
+  "  component: \"/example/scenes/loading/loading.gui\"\n"
+  "}\n"
+  ""
+}

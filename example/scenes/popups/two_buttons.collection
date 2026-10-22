@@ -1,0 +1,10 @@
+name: "popup_two_buttons"
+scale_along_z: 0
+embedded_instances {
+  id: "monarch"
+  data: "components {\n"
+  "  id: \"two_buttons\"\n"
+  "  component: \"/example/scenes/popups/two_buttons.gui\"\n"
+  "}\n"
+  ""
+}

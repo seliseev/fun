@@ -1,0 +1,31 @@
+script: "/druid/druid_widget.gui_script"
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 430.0
+    y: 932.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/background"
+  id: "background"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

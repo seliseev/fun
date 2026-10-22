@@ -1,0 +1,4 @@
+font: "/example/assets/fonts/Inter/Inter-Black.ttf"
+material: "/builtins/fonts/font.material"
+size: 198
+characters: "0123456789"

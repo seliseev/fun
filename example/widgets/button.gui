@@ -1,0 +1,42 @@
+fonts {
+  name: "BUTTON"
+  font: "/example/assets/fonts/BUTTON.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 424.0
+    y: 112.0
+  }
+  type: TYPE_BOX
+  texture: "ui/Button_Green"
+  id: "button"
+  inherit_alpha: true
+  slice9 {
+    x: 56.0
+    y: 56.0
+    z: 56.0
+    w: 56.0
+  }
+}
+nodes {
+  size {
+    x: 360.0
+    y: 70.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "BUTTON"
+  id: "text"
+  parent: "button"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

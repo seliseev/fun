@@ -1,0 +1,89 @@
+local druid = require("druid.druid")
+local monarch = require("monarch.monarch")
+
+local sound = require("fun.modules.sound")
+local vibrate = require("fun.modules.vibrate")
+
+local widget_toggle = require("example.widgets.toggle_with_icon")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+local widget_safearea = require("example.widgets.safearea")
+local game_const = require("example.const")
+
+local TEXT_KEY_TITLE = "settings.title"
+local TEXT_KEY_LANGUAGE = "settings.language"
+
+function init(self)
+    self.druid = druid.new(self)
+
+    self.safearea = self.druid:new_widget(widget_safearea, nil, nil)
+
+	self.title = self.druid:new_lang_text("title", TEXT_KEY_TITLE)
+
+    self.btn_close = self.druid:new_button("btn_close/root", function()
+        monarch.hide(game_const.MONARCH_SCENES.SETTINGS)
+    end)
+
+    ------ ЗВУК ------
+    self.toggle_sound = self.druid:new_widget(widget_toggle, "sound", nil)
+    self.toggle_sound:set_enabled(sound.get_sound_gain() > 0)
+    self.toggle_sound:set_on_toggle_function(function(enabled)
+        sound.set_sound_gain(enabled and 1 or 0)
+    end)
+    self.sound_caption = self.druid:new_lang_text("sound_caption", "settings.sound")
+
+    ------ МУЗЫКА ------
+    self.toggle_music = self.druid:new_widget(widget_toggle, "music", nil)
+    self.toggle_music:set_enabled(sound.get_music_gain() > 0)
+    self.toggle_music:set_on_toggle_function(function(enabled)
+        sound.set_music_gain(enabled and 1 or 0)
+    end)
+    self.music_caption = self.druid:new_lang_text("music_caption", "settings.music")
+
+    ------ ВИБРАЦИЯ ------
+    self.toggle_vibrate = self.druid:new_widget(widget_toggle, "vibrate", nil)
+    self.toggle_vibrate:set_enabled(vibrate.is_enabled())
+    self.toggle_vibrate:set_on_toggle_function(function(enabled)
+        vibrate.set_enabled(enabled)
+    end)
+    self.vibrate_caption = self.druid:new_lang_text("vibrate_caption", "settings.vibrate")
+
+    ------ ЯЗЫК ------
+    self.btn_language = self.druid:new_button("language/button", function()
+        monarch.show(game_const.MONARCH_SCENES.LANGUAGE)
+    end)
+	self.btn_language_text = self.druid:new_lang_text("language/text", TEXT_KEY_LANGUAGE)
+
+    ------ ПОЛИТИКА ПРИВАТНОСТИ ------
+    self.privacy_button = self.druid:new_button("privacy", function (self)
+        sys.open_url("https://seliseev.com/privacy-policy")
+    end)
+    self.privacy_text = self.druid:new_lang_text("privacy", "settings.privacy_policy")
+
+    ------ АНИМАЦИЯ ПЕРЕХОДА ------
+    self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.SETTINGS)
+        self.monarch_transition:show(gui.get_node("background"), widget_monarch_transition.transitions.color_fade_in)
+        self.monarch_transition:hide(gui.get_node("background"), widget_monarch_transition.transitions.color_fade_out)
+        self.monarch_transition:show(gui.get_node("root"), widget_monarch_transition.transitions.scale_in)
+        self.monarch_transition:hide(gui.get_node("root"), widget_monarch_transition.transitions.scale_out)
+
+    self.back_handler = self.druid:new_back_handler(function ()
+        monarch.back()
+    end)
+end
+
+function final(self)
+    self.druid:final()
+end
+
+function update(self, dt)
+    self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+    monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+    return self.druid:on_input(action_id, action)
+end

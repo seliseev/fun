@@ -1,0 +1,47 @@
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 5.0
+    y: 5.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: -100.0
+  }
+  type: TYPE_TEMPLATE
+  id: "emitter_prefab"
+  parent: "root"
+  inherit_alpha: true
+  template: "/example/widgets/emiter.gui"
+  enabled: false
+}
+nodes {
+  type: TYPE_BOX
+  id: "emitter_prefab/root"
+  parent: "emitter_prefab"
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "emitter_prefab/icon"
+  parent: "emitter_prefab/root"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "emitter_prefab/text"
+  parent: "emitter_prefab/root"
+  template_node_child: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

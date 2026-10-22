@@ -1,0 +1,79 @@
+fonts {
+  name: "caption1"
+  font: "/example/assets/fonts/Subtitle1.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  size {
+    x: 100.0
+    y: 34.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 68.0
+  }
+  type: TYPE_BOX
+  texture: "ui/counter_background"
+  id: "background"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  slice9 {
+    x: 40.0
+    y: 34.0
+    z: 40.0
+    w: 34.0
+  }
+}
+nodes {
+  position {
+    x: -34.0
+  }
+  scale {
+    x: 0.25
+    y: 0.25
+  }
+  type: TYPE_BOX
+  texture: "ui/Gold"
+  id: "icon"
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 14.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 84.0
+    y: 30.0
+  }
+  type: TYPE_TEXT
+  text: "999"
+  font: "caption1"
+  id: "text"
+  parent: "root"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

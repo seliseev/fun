@@ -1,0 +1,306 @@
+{
+    "lang": {
+        "default": "en",
+        "lang_paths": {
+            "ru": "/example/assets/lang/ru.json",
+            "en": "/example/assets/lang/en.json",
+            "de": "/example/assets/lang/de.json"
+        }
+    },
+    "analytics": {
+        "log_level": "WARN"
+    },
+    "token": {
+        "tokens": {
+            "gold": {
+                "default": 100,
+                "min": 0
+            },
+            "noads": {
+                "default": 0,
+                "min": 0,
+                "max": 1
+            }
+        },
+        "groups": {
+            "iap_gold_xs": {
+                "gold": 1000
+            },
+            "iap_gold_s": {
+                "gold": 5000
+            },
+            "iap_gold_m": {
+                "gold": 10000
+            },
+            "iap_gold_l": {
+                "gold": 25000
+            },
+            "iap_gold_xl": {
+                "gold": 50000
+            },
+            "iap_gold_xxl": {
+                "gold": 100000
+            },
+            "iap_noads": {
+                "noads": 1
+            },
+            "rw_bank": {
+                "gold": 80
+            },
+            "levelchest_default": {
+                "gold": 100
+            }
+        },
+        "lots": {}
+    },
+    "iconfinder": {
+        "gold": "ui:Gold",
+        "noads": "ui:noads"
+    },
+    "levelchest": {
+        "configs": {
+            "default": {
+                "is_enabled": true,
+                "goal": 10,
+                "reward_group": "levelchest_default"
+            }
+        },
+        "cohorts": {
+            "default": "default",
+            "new": "default",
+            "reactivated": "default",
+            "resurrected": "default",
+            "fading": "default",
+            "active": "default",
+            "payer": "default",
+            "vip": "default",
+            "watcher": "default"
+        }
+    },
+    "level_gold_reward": {
+        "default": 20,
+        "rewarded_mult": 2
+    },
+    "iapservice": {
+        "lots": [
+            {
+                "sku": "gold_xs",
+                "category": "gold_pack",
+                "reward": "iap_gold_xs",
+                "usd_price": 2
+            },
+            {
+                "sku": "gold_s",
+                "category": "gold_pack",
+                "reward": "iap_gold_s",
+                "usd_price": 8
+            },
+            {
+                "sku": "gold_m",
+                "category": "gold_pack",
+                "reward": "iap_gold_m",
+                "usd_price": 15
+            },
+            {
+                "sku": "gold_l",
+                "category": "gold_pack",
+                "reward": "iap_gold_l",
+                "usd_price": 30
+            },
+            {
+                "sku": "gold_xl",
+                "category": "gold_pack",
+                "reward": "iap_gold_xl",
+                "usd_price": 55
+            },
+            {
+                "sku": "gold_xxl",
+                "category": "gold_pack",
+                "reward": "iap_gold_xxl",
+                "usd_price": 99.99
+            },
+            {
+                "sku": "noads",
+                "category": "noads",
+                "reward": "iap_noads",
+                "usd_price": 7.99
+            }
+        ]
+    },
+    "bank": {
+        "ad": {
+            "configs": {
+                "default": {
+                    "placement_id": "bank",
+                    "cooldown": 1800,
+                    "reward": "rw_bank"
+                }
+            },
+            "cohorts": {
+                "default": "default",
+                "new": "default",
+                "reactivated": "default",
+                "resurrected": "default",
+                "fading": "default",
+                "active": "default",
+                "payer": "default",
+                "vip": "default",
+                "watcher": "default"
+            }
+        },
+        "lots": {
+            "configs": {
+                "default": {
+                    "gold_xs": {
+                        "order": 1,
+                        "flipbook": "gold_xs"
+                    },
+                    "gold_s": {
+                        "order": 2,
+                        "flipbook": "gold_xs"
+                    },
+                    "gold_m": {
+                        "order": 3,
+                        "flipbook": "gold_xs"
+                    },
+                    "gold_l": {
+                        "order": 4,
+                        "flipbook": "gold_xs"
+                    },
+                    "gold_xl": {
+                        "order": 5,
+                        "flipbook": "gold_xs"
+                    },
+                    "gold_xxl": {
+                        "order": 6,
+                        "flipbook": "gold_xs"
+                    }
+                }
+            },
+            "cohorts": {
+                "default": "default",
+                "new": "default",
+                "reactivated": "default",
+                "resurrected": "default",
+                "fading": "default",
+                "active": "default",
+                "payer": "default",
+                "vip": "default",
+                "watcher": "default"
+            }
+        },
+        "bundles": {},
+        "offers": {}
+    },
+    "adsservice": {
+        "interstitial": {
+            "configs": {
+                "default": {
+                    "is_enabled": true,
+                    "cooldown_after_inter": 60,
+                    "cooldown_after_rewarded": 60,
+                    "limit_per_day": 10,
+                    "unlock_after_level": 10,
+                    "placements": {
+                        "level_win": {
+                            "is_enabled": true,
+                            "unlock_after_level": 10
+                        },
+                        "level_start": {
+                            "is_enabled": true,
+                            "unlock_after_level": 20
+                        }
+                    }
+                },
+                "disabled": {
+                    "is_enabled": false
+                },
+                "low": {
+                    "cooldown_after_inter": 120,
+                    "cooldown_after_rewarded": 120,
+                    "limit_per_day": 5
+                },
+                "high": {
+                    "cooldown_after_inter": 30,
+                    "cooldown_after_rewarded": 30,
+                    "limit_per_day": 20
+                }
+            },
+            "cohorts": {
+                "default": "default",
+                "new": "low",
+                "reactivated": "low",
+                "resurrected": "low",
+                "fading": "high",
+                "active": "high",
+                "watcher": "low",
+                "payer": "low",
+                "vip": "disabled"
+            }
+        },
+        "rewarded": {
+            "configs": {
+                "default": {
+                    "is_enabled": true,
+                    "limit_per_day": 100,
+                    "unlock_after_level": 0,
+                    "placements": {
+                        "bank": {
+                            "is_enabled": true,
+                            "unlock_after_level": 0
+                        },
+                        "level_win": {
+                            "is_enabled": true,
+                            "unlock_after_level": 5
+                        }
+                    }
+                },
+                "disabled": {
+                    "is_enabled": false
+                },
+                "low": {
+                    "limit_per_day": 2
+                }
+            },
+            "cohorts": {
+                "default": "default",
+                "new": "default",
+                "reactivated": "default",
+                "resurrected": "default",
+                "fading": "default",
+                "active": "default",
+                "watcher": "default",
+                "payer": "low",
+                "vip": "disabled"
+            }
+        },
+        "banner": {
+            "configs": {
+                "default": {
+                    "is_enabled": true
+                },
+                "disabled": {
+                    "is_enabled": false
+                }
+            },
+            "cohorts": {
+                "default": "default",
+                "new": "default",
+                "reactivated": "default",
+                "resurrected": "default",
+                "fading": "default",
+                "active": "default",
+                "watcher": "default",
+                "payer": "default",
+                "vip": "disabled"
+            }
+        }
+    },
+    "rateus": {
+        "is_enabled": true,
+        "show_limit": 3,
+        "cooldown_seconds": 86400,
+        "cooldown_levels": 10,
+        "show_after_level": 10
+    }
+}

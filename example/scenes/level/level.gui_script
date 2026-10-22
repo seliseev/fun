@@ -1,0 +1,89 @@
+--- Экран уровня. В примере уровень проходится кнопкой "Победа"
+
+local druid = require("druid.druid")
+local events = require("event.events")
+local monarch = require("monarch.monarch")
+
+local const = require("fun.const")
+
+local game_const = require("example.const")
+local level_manager = require("example.modules.level_manager")
+local widget_counter = require("example.widgets.counter")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+local widget_safearea = require("example.widgets.safearea")
+local widget_bannersafearea = require("example.widgets.bannersafearea")
+
+
+---@class level.gui_script
+---@field druid druid.instance
+---@field safearea widget.safearea
+---@field bannersafearea widget.bannersafearea
+---@field btn_back druid.button
+---@field btn_win druid.button
+---@field back_handler druid.back_handler
+---@field widget_gold_counter widget.counter
+---@field monarch_transition widget.monarch_transition
+
+local TEXT_BUTTON_WIN = "level.button.win"
+
+---@param self level.gui_script
+local function on_level_win(self)
+	monarch.show(game_const.MONARCH_SCENES.WIN)
+end
+
+---@param self level.gui_script
+local function on_button_win(self)
+	self.btn_win:set_enabled(false)
+	level_manager.complete()
+end
+
+---@param self level.gui_script
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	self.druid = druid.new(self)
+
+	self.safearea = self.druid:new_widget(widget_safearea, nil, nil)
+	self.bannersafearea = self.druid:new_widget(widget_bannersafearea, nil, nil)
+
+	self.btn_back = self.druid:new_button("btn_back/root", function()
+		monarch.show(game_const.MONARCH_SCENES.HUD, { clear = true })
+	end)
+	self.back_handler = self.druid:new_back_handler(function()
+		monarch.show(game_const.MONARCH_SCENES.HUD, { clear = true })
+	end)
+
+	self.widget_gold_counter = self.druid:new_widget(widget_counter, "gold", nil, game_const.TOKEN.GOLD, function()
+		monarch.show(game_const.MONARCH_SCENES.BANK)
+	end)
+
+	self.btn_win = self.druid:new_button("win/button", on_button_win, self)
+	self.druid:new_lang_text("win/text", TEXT_BUTTON_WIN)
+
+	gui.set_text(gui.get_node("level_number"), tostring(level_manager.current_level().id))
+
+	-- Конфигурация переходов лежит в assets/monarch.json
+	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.LEVEL)
+
+	events.subscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
+	events.trigger(const.EVENTS.LEVEL_START, level_manager.current_level())
+end
+
+---@param self level.gui_script
+function final(self)
+	self.druid:final()
+	events.unsubscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end

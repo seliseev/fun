@@ -1,0 +1,173 @@
+images {
+  image: "/example/assets/images/ui/counter_background.png"
+}
+images {
+  image: "/example/assets/images/ui/progressbar_orange.png"
+}
+images {
+  image: "/example/assets/images/ui/progressbar_stroke.png"
+}
+images {
+  image: "/example/assets/images/ui/levelchest_background.png"
+}
+images {
+  image: "/example/assets/images/ui/Popup.png"
+}
+images {
+  image: "/example/assets/images/ui/Popup_container.png"
+}
+images {
+  image: "/example/assets/images/ui/background.png"
+}
+images {
+  image: "/example/assets/images/ui/logo.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/ui/event_icon_back.png"
+}
+images {
+  image: "/example/assets/images/ui/event_text_back.png"
+}
+images {
+  image: "/example/assets/images/icons/Back.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/icons/Close.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/Gold.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/Hammer.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/LevelChest.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/Light.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/MusicOff.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/MusicOn.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/icons/Settings.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_8
+}
+images {
+  image: "/example/assets/images/icons/SoundOff.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/icons/SoundOn.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_8
+}
+images {
+  image: "/example/assets/images/ui/Button_Black.png"
+}
+images {
+  image: "/example/assets/images/ui/Button_Green.png"
+}
+images {
+  image: "/example/assets/images/ui/Button_RoundBlack.png"
+}
+images {
+  image: "/example/assets/images/ui/Buttons_RoundGreen.png"
+}
+images {
+  image: "/example/assets/images/ui/Button_RoundBlackSmall.png"
+}
+images {
+  image: "/example/assets/images/ui/BankLotBackground.png"
+}
+images {
+  image: "/example/assets/images/ui/loading_d.png"
+}
+images {
+  image: "/example/assets/images/ui/loading_o.png"
+}
+images {
+  image: "/example/assets/images/ui/loading_r.png"
+}
+images {
+  image: "/example/assets/images/ui/loading_w.png"
+}
+images {
+  image: "/example/assets/images/ui/Button_Orange.png"
+}
+images {
+  image: "/example/assets/images/ui/glow.png"
+}
+images {
+  image: "/example/assets/images/icons/Video.png"
+}
+images {
+  image: "/example/assets/images/ui/logo_fun.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_4
+}
+images {
+  image: "/example/assets/images/fx/confetti_star.png"
+}
+images {
+  image: "/example/assets/images/fx/confetti_curvy.png"
+}
+images {
+  image: "/example/assets/images/fx/confetti_rectangle.png"
+}
+images {
+  image: "/example/assets/images/ui/gold_l.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/ui/gold_m.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/ui/gold_s.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/ui/gold_xl.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/ui/gold_xs.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/ui/gold_xxl.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_5
+}
+images {
+  image: "/example/assets/images/icons/VibrateOff.png"
+}
+images {
+  image: "/example/assets/images/icons/VibrateOn.png"
+}
+images {
+  image: "/example/assets/images/icons/Shuffle.png"
+}
+images {
+  image: "/example/assets/images/ui/star_empty.png"
+}
+images {
+  image: "/example/assets/images/ui/star_filled.png"
+}
+images {
+  image: "/example/assets/images/icons/noads.png"
+}
+images {
+  image: "/example/assets/images/ui/noads_image.png"
+}
+extrude_borders: 2

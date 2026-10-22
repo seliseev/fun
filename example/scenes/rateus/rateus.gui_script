@@ -1,0 +1,99 @@
+local monarch = require "monarch.monarch"
+local druid = require("druid.druid")
+
+local rateus = require("fun.modules.rateus")
+
+local game_const = require("example.const")
+local widget_toggle_button = require("example.widgets.toggle_button")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+
+local TEXT_KEY_TITLE = "rateus.title"
+local TEXT_KEY_DESCRIPTION = "rateus.description"
+local TEXT_KEY_NOT_NOW = "rateus.not_now"
+local TEXT_THANKS_TITLE = "rateus.thanks.title"
+local TEXT_THANKS_DESCRIPTION = "rateus.thanks.description"
+local TEXT_THANKS_BTN = "rateus.thanks.btn"
+
+local function on_star_click(self, star_id, enabled)
+    for _, star in pairs(self.stars) do
+        star:set_on_toggle_function(nil)
+    end
+
+    for i = 1, 5 do
+        if i <= star_id then
+            self.stars[i]:set_enabled(true)
+        else
+            self.stars[i]:set_enabled(false)
+        end
+    end
+
+    rateus.set_rated(true)
+
+    if star_id >= 4 then
+        timer.delay(0.05, false, function(self, handle, time_lapsed)
+            monarch.back()
+            --- 0.2 seconds delay to hide popup
+            timer.delay(0.2, false, function(self, handle, time_lapsed)
+                rateus.show_system()
+            end)
+        end)
+    else
+        timer.delay(0.1, false, function(self, handle, time_lapsed)
+            ---@type game.scenes.popups.one_button.data
+            local data = {
+                title_text_key = TEXT_THANKS_TITLE,
+                description_text_key = TEXT_THANKS_DESCRIPTION,
+                button_text_key = TEXT_THANKS_BTN,
+                button_callback = function()
+                    monarch.back()
+                end
+            }
+            monarch.replace(game_const.MONARCH_SCENES.POPUP_ONE_BUTTON, nil, data)
+        end)
+    end
+end
+
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    self.druid = druid.new(self)
+
+    self.druid:new_lang_text("title", TEXT_KEY_TITLE)
+    self.druid:new_lang_text("description", TEXT_KEY_DESCRIPTION)
+    self.druid:new_lang_text("not_now", TEXT_KEY_NOT_NOW)
+
+    self.druid:new_button("not_now", function()
+        monarch.back()
+    end)
+    
+    self.stars = {}
+    for i = 1, 5 do
+        self.stars[i] = self.druid:new_widget(widget_toggle_button, "star".. tostring(i), nil)
+        self.stars[i]:set_id(i)
+        self.stars[i]:set_enabled(false)
+        self.stars[i]:set_on_toggle_function(on_star_click, self)
+    end
+
+    self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.RATEUS)
+end
+
+function final(self)
+    self.druid:final()
+end
+
+function update(self, dt)
+    self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+    monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+    return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+end

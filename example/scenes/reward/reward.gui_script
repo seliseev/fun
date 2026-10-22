@@ -1,0 +1,195 @@
+local monarch = require("monarch.monarch")
+local druid = require("druid.druid")
+local tweener = require("tweener.tweener")
+local token = require("token.token")
+
+
+local fun = require("fun.fun")
+local tablex = require("fun.libs.tablex")
+local wallet = require("fun.modules.wallet")
+local iconfinder = require("example.modules.iconfinder")
+
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+local game_const = require("example.const")
+
+--- @class game.scenes.reward.data
+--- @field reward string @Идентификатор группы токенов, которые нужно показать
+--- @field auto_sync_visual boolean @Автоматически синхронизировать визуальные значения токенов
+--- @field header_text_key string @Локализация ключа для заголовка
+--- @field subheader_text_key string @Локализация ключа для подзаголовка
+--- @field callback function|nil @Функция, которая будет вызвана после завершения анимации
+local data = {}
+
+local TEXT_KEY_TAP_TO_CONTIMUE = "ui.tap_to_continue"
+
+
+local function play_animation(self)
+    --- Анимация наград
+    local delay = 0
+    for _, show_data in ipairs(self.to_show) do
+        local original_scale = gui.get_scale(show_data.icon)
+        gui.set_visible(show_data.icon, true)
+        gui.set_scale(show_data.icon, original_scale*1.25)
+        gui.animate(show_data.icon, "scale", original_scale, gui.EASING_OUTBOUNCE, 0.5, 0, function()
+            gui.set_visible(show_data.counter, true)
+            tweener.tween(gui.EASING_OUTCIRC, 0, show_data.token_diff, 0.5, function(value, is_final_call)
+                gui.set_text(show_data.counter, math.floor(value))
+                if is_final_call then
+                    local counter_original_scale = gui.get_scale(show_data.counter)
+                    gui.set_scale(show_data.counter, counter_original_scale*1.25)
+                    gui.animate(show_data.counter, "scale", counter_original_scale, gui.EASING_OUTBOUNCE, 0.5)
+                end
+            end)
+        end)
+        delay = delay + 0.4
+    end
+
+    --- Анимация текста "Нажимите, чтобы продолжить"
+    local t = 0
+    local min = 0.2
+    local max = 0.8
+    self.timer_handle = timer.delay(0, true, function(self, handle, time_lapsed)
+        local value = (math.sin(t) + 1) / 2  -- будет колебаться от 0 до 1
+        value = min + (max - min) * value
+        gui.set_alpha(self.continue.node, value)
+        t = t + time_lapsed * 3
+    end)
+end
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+
+    self.druid = druid.new(self)
+    self.grid = self.druid:new_grid("grid", "prefab", 3)
+    self.grid.style.IS_DYNAMIC_NODE_POSES = true
+    self.prefab = gui.get_node("prefab")
+    gui.set_enabled(self.prefab, false)
+
+    --- @type game.scenes.reward.data
+    self.data = monarch.data(game_const.MONARCH_SCENES.REWARD)
+    assert(self.data.reward, "Missing reward in reward data")
+    assert(self.data.auto_sync_visual ~= nil, "Missing auto_sync_visual in reward data")
+
+    self.to_show = {}
+    local rewards = token.get_token_group(self.data.reward)
+    assert(rewards, "Rewards not found", {reward = self.data.reward})
+
+    for token_id, value in pairs(rewards) do
+        local token_value = wallet.get(token_id)
+        local token_visual = wallet.get_visual(token_id)
+        if token_value == token_visual then
+            fun.logger:error("Token " .. token_id .. " has no visual value to show")
+        else
+            table.insert(self.to_show, {token_id=token_id, token_visual=token_visual, token_value=token_value, token_diff=token_value-token_visual})
+        end
+    end
+
+    if tablex.is_empty(self.to_show) then
+        fun.logger:error("No tokens to show in reward data")
+        monarch.back()
+        return
+    end
+
+    for _, to_show_data in ipairs(self.to_show) do
+        local prefab_nodes = gui.clone_tree(self.prefab)
+        local root = prefab_nodes["prefab"]
+        local icon = prefab_nodes["icon"]
+        local counter = prefab_nodes["counter"]
+        to_show_data.root = root
+        to_show_data.icon = icon
+        to_show_data.counter = counter
+        
+        local flipbook = iconfinder.get_flipbook(to_show_data.token_id)
+        if flipbook ~= nil then
+            gui.play_flipbook(icon, flipbook)
+        end
+        
+        gui.set_enabled(root, true)
+        gui.set_visible(icon, false)
+        gui.set_visible(counter, false)
+
+        self.grid:add(root)
+    end
+
+    -------- HEADER AND SUBHEADER --------
+    if not self.data.header_text_key then
+        gui.set_enabled(gui.get_node("header"), false)
+        gui.set_visible(gui.get_node("header"), false)
+    else
+        self.header = self.druid:new_lang_text("header", self.data.header_text_key)
+    end
+
+    if not self.data.subheader_text_key then
+        gui.set_enabled(gui.get_node("subheader"), false)
+        gui.set_visible(gui.get_node("subheader"), false)
+    else
+        self.subheader = self.druid:new_lang_text("subheader", self.data.subheader_text_key)
+    end
+
+    self.continue = self.druid:new_lang_text("continue", TEXT_KEY_TAP_TO_CONTIMUE)
+
+    -------- COUNTER --------
+    self.counter = gui.get_node("counter")
+    gui.set_text(self.counter, "")
+    gui.set_visible(self.counter, false)
+
+    -------- TRANSITION --------
+    ---@type widget.monarch_transition
+    self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.REWARD)
+    self.monarch_transition:show(gui.get_node("background"), widget_monarch_transition.transitions.color_fade_in)
+    self.monarch_transition:hide(gui.get_node("background"), widget_monarch_transition.transitions.color_fade_out)
+    self.monarch_transition:show(gui.get_node("root"), widget_monarch_transition.transitions.scale_in)
+    self.monarch_transition:hide(gui.get_node("root"), widget_monarch_transition.transitions.scale_out)
+
+    self.monarch_transition.event_transition_done:subscribe(function ()
+        msg.post(".", "play")
+    end, self)
+end
+
+function final(self)
+    self.druid:final()
+
+    if self.timer_handle then
+        timer.cancel(self.timer_handle)
+    end
+end
+
+function update(self, dt)
+    self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("play") then
+        play_animation(self)
+    end
+
+    self.druid:on_message(message_id, message, sender)
+    monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+
+    -- При любом нажатии на экран, вызываем callback и закрываем экран
+    if action_id == hash("touch") and action.pressed then
+
+        if self.data.auto_sync_visual == true then
+            local rewards = token.get_token_group(self.data.reward)
+            assert(rewards, "Rewards not found", {reward = self.data.reward})
+            for token_id, value in pairs(rewards) do
+                wallet.sync_visual(token_id)
+            end
+        end
+
+        if self.data.callback then
+            self.data.callback()
+        end
+        monarch.back()
+        return true
+    end
+
+    return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+    self.druid:on_reload()
+end

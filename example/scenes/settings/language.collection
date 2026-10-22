@@ -1,0 +1,10 @@
+name: "language"
+scale_along_z: 0
+embedded_instances {
+  id: "language"
+  data: "components {\n"
+  "  id: \"language\"\n"
+  "  component: \"/example/scenes/settings/language.gui\"\n"
+  "}\n"
+  ""
+}

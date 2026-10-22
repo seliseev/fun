@@ -1,0 +1,10 @@
+name: "m"
+scale_along_z: 0
+embedded_instances {
+  id: "monarch"
+  data: "components {\n"
+  "  id: \"rateus\"\n"
+  "  component: \"/example/scenes/rateus/rateus.gui\"\n"
+  "}\n"
+  ""
+}

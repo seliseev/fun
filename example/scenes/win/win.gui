@@ -1,0 +1,339 @@
+script: "/example/scenes/win/win.gui_script"
+fonts {
+  name: "Headline1"
+  font: "/example/assets/fonts/Headline1.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 430.0
+    y: 932.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_N
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: -200.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 800.0
+    y: 300.0
+  }
+  color {
+    x: 0.996
+    y: 0.816
+    z: 0.286
+  }
+  type: TYPE_TEXT
+  text: "LEVEL\n"
+  "COMPLETE"
+  font: "Headline1"
+  id: "title"
+  outline {
+    x: 0.635
+    y: 0.357
+    z: 0.024
+  }
+  line_break: true
+  parent: "N_Anchor"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -215.0
+    y: 466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_NW
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_NE
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 215.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  xanchor: XANCHOR_RIGHT
+  pivot: PIVOT_E
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 215.0
+    y: -466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_BOTTOM
+  pivot: PIVOT_SE
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: -466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  yanchor: YANCHOR_BOTTOM
+  pivot: PIVOT_S
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 207.0
+  }
+  type: TYPE_TEMPLATE
+  id: "continue"
+  parent: "S_Anchor"
+  inherit_alpha: true
+  template: "/example/widgets/button_black.gui"
+}
+nodes {
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 424.0
+    y: 140.0
+  }
+  type: TYPE_BOX
+  id: "continue/button"
+  parent: "continue"
+  overridden_fields: 1
+  overridden_fields: 3
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 370.0
+    y: 130.0
+  }
+  type: TYPE_TEXT
+  id: "continue/text"
+  line_break: true
+  parent: "continue/button"
+  overridden_fields: 3
+  overridden_fields: 4
+  overridden_fields: 18
+  template_node_child: true
+}
+nodes {
+  position {
+    y: 302.0
+  }
+  type: TYPE_TEMPLATE
+  id: "rw"
+  parent: "S_Anchor"
+  inherit_alpha: true
+  template: "/example/widgets/button_orange.gui"
+}
+nodes {
+  size {
+    x: 424.0
+    y: 180.0
+  }
+  type: TYPE_BOX
+  id: "rw/button"
+  parent: "rw"
+  overridden_fields: 4
+  template_node_child: true
+}
+nodes {
+  size {
+    x: 370.0
+    y: 150.0
+  }
+  type: TYPE_TEXT
+  id: "rw/text"
+  line_break: true
+  parent: "rw/button"
+  overridden_fields: 4
+  overridden_fields: 18
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -215.0
+    y: -466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_BOTTOM
+  pivot: PIVOT_SW
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -215.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  xanchor: XANCHOR_LEFT
+  pivot: PIVOT_W
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "CENTER_Anchor"
+  parent: "root"
+  layer: "ui_elements"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -2.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/glow"
+  id: "glow"
+  parent: "CENTER_Anchor"
+  inherit_alpha: true
+  alpha: 0.81
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/gold_xs"
+  id: "reward_icon"
+  parent: "CENTER_Anchor"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+layers {
+  name: "background"
+}
+layers {
+  name: "window"
+}
+layers {
+  name: "ui_elements"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

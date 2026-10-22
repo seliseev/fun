@@ -1,0 +1,69 @@
+--- Ads Controller
+--- В зависимости от экрана, показывает или скрывает баннер
+--- По умолчанию баннер показывается. Чтобы баннер не показывался, нужно добавить экран в список SCREENS_TO_HIDE_BANNER
+
+local log = require("fun.libs.log")
+local monarch = require("monarch.monarch")
+-- local events = require("event.events")
+
+local tablex = require("fun.libs.tablex")
+local const = require("fun.const")
+local adsservice = require("fun.modules.adsservice")
+
+local game_const = require("example.const")
+
+local logger = log.get_logger("controllers.ads")
+
+
+--- Список экранов, на которых нужно скрывать баннер
+local SCREENS_TO_HIDE_BANNER = {
+	game_const.MONARCH_SCENES.BANK
+}
+
+local function try_to_show_banner(self)
+	-- logger:debug("try_to_show_banner")
+	
+	if adsservice.is_banner_showing() then
+		-- logger:debug("banner is already showing")
+		return
+	end
+
+	if self.active_timer then
+		-- logger:debug("active timer is already set")
+		return
+	end
+
+	if not adsservice.show_banner(const.ADS_BANNER_POSITION.BOTTOM) then
+		-- logger:debug("show_banner failed, setting active timer")
+		self.active_timer = timer.delay(2, false, function()
+			self.active_timer = nil
+			try_to_show_banner(self)
+		end)
+	end
+end
+
+------------------------------------------------
+--- Defold functions
+------------------------------------------------
+
+function init(self)
+	monarch.add_listener(nil)
+end
+
+function final(self)
+	monarch.remove_listener(nil)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == monarch.SCREEN_TRANSITION_IN_FINISHED then
+		if tablex.contains(SCREENS_TO_HIDE_BANNER, message.screen) and adsservice.is_banner_showing() then
+			adsservice.hide_banner()
+			if self.active_timer then
+				timer.cancel(self.active_timer)
+				self.active_timer = nil
+			end
+		else
+			try_to_show_banner(self)
+		end
+	end
+end

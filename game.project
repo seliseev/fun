@@ -1,5 +1,6 @@
 [project]
 title = fun
+custom_resources = /example/assets/gamedata.json,/example/assets/monarch.json,/example/assets/targets.json,/example/assets/lang
 dependencies#0 = https://github.com/britzl/monarch/archive/master.zip
 dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/21.zip
 dependencies#2 = https://github.com/Insality/defold-saver/archive/refs/tags/5.zip
@@ -7,10 +8,55 @@ dependencies#3 = https://github.com/Insality/defold-tweener/archive/refs/tags/6.
 dependencies#4 = https://github.com/britzl/stately/archive/refs/heads/master.zip
 dependencies#5 = https://github.com/indiesoftby/defold-yagames/archive/refs/tags/0.19.0.zip
 dependencies#6 = https://github.com/Insality/druid/archive/refs/tags/1.4.0.zip
-dependencies#7 = https://github.com/Insality/defold-token/archive/refs/tags/9.zip
+dependencies#7 = https://github.com/britzl/defold-orthographic/archive/master.zip
 
 [library]
 include_dirs = fun
 
 [bootstrap]
-main_collection = /fun/fun.collectionc
+main_collection = /example/loader.collectionc
+render = /example/render/camera.renderc
+
+[display]
+width = 430
+height = 932
+high_dpi = 1
+display_profiles = /example/example.display_profilesc
+
+[input]
+game_binding = /example/input/game.input_bindingc
+repeat_delay = 0.1
+repeat_interval = 0.1
+use_accelerometer = 0
+
+[html5]
+scale_mode = stretch
+
+[render]
+clear_color_red = 0.137255
+clear_color_green = 0.176471
+clear_color_blue = 0.27451
+
+[font]
+runtime_generation = 0
+
+[log]
+level = TRACE
+level_release = ERROR
+info_block = %levelname[%logger]
+message_block = %space%message: %context %tab%tab%tab<%function>
+logger_block_width = 22
+max_log_length = 1024
+inspect_depth = 1
+
+[saver]
+save_name = save.json
+autosave_timer = 3
+saver_key = saver
+storage_key = storage
+
+[fun]
+target = development
+gamedata_path = /example/assets/gamedata.json
+monarch_data_path = /example/assets/monarch.json
+targets_data_path = /example/assets/targets.json

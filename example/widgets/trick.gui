@@ -1,0 +1,76 @@
+nodes {
+  size {
+    x: 5.0
+    y: 5.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "state_spend"
+  parent: "root"
+  inherit_alpha: true
+  template: "/example/widgets/button_token.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "state_spend/root"
+  parent: "state_spend"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "state_spend/button"
+  parent: "state_spend/root"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "state_spend/icon"
+  parent: "state_spend/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "state_spend/text"
+  parent: "state_spend/root"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "state_buy"
+  parent: "root"
+  inherit_alpha: true
+  template: "/example/widgets/button_token.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "state_buy/root"
+  parent: "state_buy"
+  overridden_fields: 45
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "state_buy/button"
+  parent: "state_buy/root"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "state_buy/icon"
+  parent: "state_buy/button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "state_buy/text"
+  parent: "state_buy/root"
+  template_node_child: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

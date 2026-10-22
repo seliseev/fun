@@ -1,0 +1,292 @@
+[
+    {
+        "screen_id": "hud",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in": [
+                    { "node_name": "gold/root", "transition": "slide_in_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0 },
+                    { "node_name": "settings/root", "transition": "slide_in_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "levelchest/root", "transition": "slide_in_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "noads/root", "transition": "slide_in_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0.05},
+                    { "node_name": "play/button", "transition": "slide_in_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "logo", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_text", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out": [
+                    { "node_name": "gold/root", "transition": "slide_out_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0 },
+                    { "node_name": "settings/root", "transition": "slide_out_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "levelchest/root", "transition": "slide_out_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "noads/root", "transition": "slide_out_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0.05},
+                    { "node_name": "play/button", "transition": "slide_out_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "logo", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_text", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in": [
+                    { "node_name": "gold/root", "transition": "slide_in_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0 },
+                    { "node_name": "settings/root", "transition": "slide_in_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "levelchest/root", "transition": "slide_in_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "noads/root", "transition": "slide_in_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0.05},
+                    { "node_name": "play/button", "transition": "slide_in_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "logo", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_text", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_out": [
+                    { "node_name": "gold/root", "transition": "slide_out_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0 },
+                    { "node_name": "settings/root", "transition": "slide_out_top", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "levelchest/root", "transition": "slide_out_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "noads/root", "transition": "slide_out_right", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0.05},
+                    { "node_name": "play/button", "transition": "slide_out_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "logo", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "level_text", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            },
+            {
+                "screen": "bank",
+                "show_out": [
+                    { "node_name": "gold/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0, "delay": 0},
+                    { "node_name": "settings/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "back_in": [
+                    { "node_name": "gold/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0, "delay": 0},
+                    { "node_name": "settings/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "logo", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0.4},
+                    { "node_name": "level_number", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0.4},
+                    { "node_name": "level_text", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0.4}
+                ]
+            },
+            {
+                "screen": "level",
+                "show_out": [
+                    { "node_name": "gold/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0, "delay": 0},
+                    { "node_name": "settings/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "show_in": [
+                    { "node_name": "gold/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0, "delay": 0},
+                    { "node_name": "settings/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "bank",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in": [
+                    { "node_name": "btn_back/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "gold/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0, "delay": 0}
+                ],
+                "back_out": [
+                    { "node_name": "btn_back/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "gold/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0, "delay": 0},
+                    { "node_name": "title", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "level",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "btn_back/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "win/button", "transition": "slide_in_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "btn_back/root", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "win/button", "transition": "slide_out_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_out", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "back_in":[
+                    { "node_name": "btn_back/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "win/button", "transition": "slide_in_bottom", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "level_number", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "back_out":[]
+            },
+            {
+                "screen": "bank",
+                "back_in":[
+                    { "node_name": "btn_back/root", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0},
+                    { "node_name": "win/button", "transition": "slide_in_bottom", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0.4},
+                    { "node_name": "level_number", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0.4}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "levelchest",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in":[],
+                "back_out":[
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "noads",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in":[],
+                "back_out":[
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "settings",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "language",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "root", "transition": "slide_in_top", "easing": "EASING_OUTBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "root", "transition": "slide_out_top", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in":[
+                    { "node_name": "root", "transition": "slide_in_top", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_out":[
+                    { "node_name": "root", "transition": "slide_out_top", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "win",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "back_in":[],
+                "back_out":[]
+            }
+        ]
+    },
+    {
+        "screen_id": "rateus",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_OUTBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_INBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_OUTBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_INBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "popup_one_button",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_OUTBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "show_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_INBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_in":[
+                    { "node_name": "root", "transition": "scale_fade_in", "easing": "EASING_OUTBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_in", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ],
+                "back_out":[
+                    { "node_name": "root", "transition": "scale_fade_out", "easing": "EASING_INBACK", "duration": 0.2, "delay": 0},
+                    { "node_name": "background", "transition": "color_fade_out", "easing": "EASING_LINEAR", "duration": 0.2, "delay": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "screen_id": "example",
+        "transitions": [
+            {
+                "screen": "default",
+                "show_in":[
+                    { "node_name": "node_name", "transition": "fade_in", "easing": "EASING_LINEAR", "duration": 0.4, "delay": 0}
+                ],
+                "show_out":[],
+                "back_in":[],
+                "back_out":[]
+            }
+        ]
+    }
+]

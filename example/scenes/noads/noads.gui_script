@@ -1,0 +1,95 @@
+local monarch = require "monarch.monarch"
+local druid = require("druid.druid")
+local noads = require("fun.modules.noads")
+local log = require("fun.libs.log")
+local iapevents = require("fun.modules.iap.events")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+local game_const = require("example.const")
+
+local logger = log.get_logger("game.scenes.noads")
+
+local TEXT_KEY_TITLE = "noads.title"
+local TEXT_KEY_DESCRIPTION = "noads.description"
+local TEXT_KEY_DESCRIPTION1 = "noads.description1"
+local TEXT_KEY_CLOSE_BUTTON = "noads.close_button"
+
+
+--- Обработка ситуации когда игрок уже открыл окно NoAds, но продукты ещё не загрузились
+--- Если загрузятся пока игрок в окне, то обновляем текст с ценой
+---@param self table
+---@param success boolean
+---@param products fun.iap.product[]
+---@param error table|nil
+local function on_list_products(self, success, products, error)
+    if success then
+        timer.delay(0, false, function()
+            local lot = noads.get_lot()
+            if lot and lot.product then
+                local price_string = lot.product.price_string
+                self.druid:new_text("buy/text", price_string)
+            else
+                logger:error("No Ads lot not found")
+            end
+        end)
+    end
+end
+
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+    self.druid = druid.new(self)
+
+    self.druid:new_lang_text("title", TEXT_KEY_TITLE)
+    self.druid:new_lang_text("description", TEXT_KEY_DESCRIPTION)
+    self.druid:new_lang_text("description1", TEXT_KEY_DESCRIPTION1)
+    self.druid:new_lang_text("close", TEXT_KEY_CLOSE_BUTTON)
+
+    noads.on_noads_purchased:subscribe(function()
+        logger:debug("GUI No Ads purchased")
+        monarch.back()
+    end)
+
+    self.druid:new_button("buy/button", function()
+        noads.purchase()
+    end)
+
+    local lot = noads.get_lot()
+    if lot and lot.product then
+        local price_string = lot.product.price_string
+        self.druid:new_text("buy/text", price_string)
+    else
+        logger:warn("No Ads lot not found")
+        self.druid:new_text("buy/text", "...")
+    end
+
+    self.druid:new_button("close", function()
+        monarch.back()
+    end)
+
+    iapevents.on_list_products:subscribe(on_list_products, self)
+
+    ------- MONARCH -------
+	--- @type widget.monarch_transition
+	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.NOADS)
+end
+
+function final(self)
+    self.druid:final()
+    iapevents.on_list_products:unsubscribe(on_list_products, self)
+end
+
+function update(self, dt)
+    self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+    monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+    return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+end

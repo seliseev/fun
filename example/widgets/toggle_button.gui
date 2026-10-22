@@ -1,0 +1,83 @@
+fonts {
+  name: "BUTTON"
+  font: "/example/assets/fonts/BUTTON.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 540.0
+    y: 140.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 540.0
+    y: 112.0
+  }
+  type: TYPE_BOX
+  texture: "ui/Button_Black"
+  id: "disabled"
+  parent: "root"
+  inherit_alpha: true
+  slice9 {
+    x: 56.0
+    y: 56.0
+    z: 56.0
+    w: 56.0
+  }
+}
+nodes {
+  size {
+    x: 270.0
+    y: 50.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "BUTTON"
+  id: "disabled_text"
+  parent: "disabled"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 540.0
+    y: 112.0
+  }
+  type: TYPE_BOX
+  texture: "ui/Button_Orange"
+  id: "enabled"
+  parent: "root"
+  inherit_alpha: true
+  slice9 {
+    x: 56.0
+    y: 56.0
+    z: 56.0
+    w: 56.0
+  }
+}
+nodes {
+  size {
+    x: 270.0
+    y: 50.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "BUTTON"
+  id: "enabled_text"
+  parent: "enabled"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

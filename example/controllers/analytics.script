@@ -1,0 +1,180 @@
+--- Контроллер для работы с аналитикой
+--- Сам подписывается на события и отправляет данные в аналитику
+
+local log = require("fun.libs.log")
+local events = require("event.events")
+local token = require("token.token")
+local monarch = require("monarch.monarch")
+
+local const = require("fun.const")
+local iapservice = require("fun.modules.iapservice")
+local adsservice = require("fun.modules.adsservice")
+local analytics = require("fun.modules.analytics.analytics")
+local segmentation = require("fun.modules.segmentation")
+local lang = require("fun.modules.lang")
+
+local game_const = require("example.const")
+local logger = log.get_logger("script.controller.analytics")
+
+
+---@class script.controller.analytics
+---@field current_screen string|userdata
+
+
+--- Обработка события старта уровня
+---@param self script.controller.analytics
+---@param level example.level
+local function on_level_start(self, level)
+	analytics.progression_start("level", level.id)
+end
+
+
+--- Обработка события выигрыша уровня
+---@param self script.controller.analytics
+---@param level example.level
+local function on_level_win(self, level)
+    analytics.progression_complete("level", level.id)
+end
+
+
+--- Обработка события проигрыша уровня
+---@param self script.controller.analytics
+---@param level example.level
+local function on_level_fail(self, level)
+	analytics.progression_fail("level", level.id)
+end
+
+
+--- Обработка события изменения токена
+---@param self script.controller.analytics
+---@param container_id string
+---@param token_id string
+---@param amount number
+---@param delta number
+---@param reason_category string|nil
+---@param reason_id string|nil
+local function on_token_change(self, container_id, token_id, amount, delta, reason_category, reason_id)
+	logger:info("Token changed", {container_id = container_id, token_id = token_id, amount = amount, delta = delta, reason_category = reason_category, reason_id = reason_id})
+    
+	if delta > 0 then
+	    analytics.resource_added(token_id, delta, reason_category, reason_id)
+	else
+		analytics.resource_spent(token_id, -delta, reason_category, reason_id)
+	end
+end
+
+--- Обработка события завершения покупки с целью отправки в аналитику
+---@param self script.controller.analytics
+---@param success boolean
+---@param lot fun.iapservice.lot|nil
+---@param transaction fun.iap.transaction
+---@param metadata fun.iapservice.runtime.metadata
+---@param error table|nil
+local function on_iapservice_purchase_end(self, success, lot, transaction, metadata, error)
+	if not success then
+		return
+	end
+	if not lot then
+		logger:warn("Lot is nil", {success = success, transaction = transaction, error = error})
+		return
+	end
+
+	analytics.purchase(lot, transaction, metadata.placement)
+end
+
+
+local function on_adsservice_rewarded_close(self, placement_id)
+	analytics.ad_rw_show(placement_id, "admob")
+end
+
+local function on_adsservice_rewarded_reward(self, placement_id)
+	analytics.ad_rw_reward_received(placement_id, "admob")
+end
+
+local function on_adsservice_rewarded_paid(self, placement_id, currency_code, value_micros, precision)
+	-- TODO: логировать доход от рекламы и eCPM в records
+	logger:info("Rewarded ad paid", {placement_id = placement_id, currency_code = currency_code, value_micros = value_micros, precision = precision})
+end
+
+local function on_adsservice_interstitial_close(self, placement_id)
+	analytics.ad_inter_show(placement_id, "admob")
+end
+
+local function on_adsservice_interstitial_paid(self, placement_id, currency_code, value_micros, precision)
+	-- TODO: логировать доход от рекламы и eCPM в records
+	logger:info("Interstitial ad paid", {placement_id = placement_id, currency_code = currency_code, value_micros = value_micros, precision = precision})
+end
+
+local function on_adsservice_banner_start(self, placement_id)
+	local currens_screen = game_const.MONARCH_SCENE_TO_STRING[self.current_screen]
+	analytics.ad_banner_show(currens_screen, "admob")
+end
+
+local function on_adsservice_banner_refresh(self, width, height, position)
+	local currens_screen = game_const.MONARCH_SCENE_TO_STRING[self.current_screen]
+	analytics.ad_banner_show(currens_screen, "admob")
+end
+
+local function on_adsservice_banner_paid(self, currency_code, value_micros, precision)
+	-- TODO: логировать доход от рекламы и eCPM в records
+	logger:info("Banner ad paid", {currency_code = currency_code, value_micros = value_micros, precision = precision})
+end
+
+local function on_segmentation_cohort_changed(self, cohort)
+	analytics.set_user_property("cohort", cohort)
+end
+
+
+---@param self script.controller.analytics
+function init(self)
+	monarch.add_listener(nil)
+
+    --- Отправляем когорту пользователя в аналитику, при изменениях в runtime будем обновлять по событию
+	analytics.set_user_property("cohort", segmentation.get_cohort())
+	--- Язык, на котором играет игрок фиксируем только на старте сессии
+	analytics.set_user_property("language", lang.get_lang())
+
+
+	--- подписываемся на все необходимые события
+	token.on_token_change:subscribe(on_token_change, self)
+	events.subscribe(const.EVENTS.LEVEL_START, on_level_start, self)
+	events.subscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
+	events.subscribe(const.EVENTS.LEVEL_FAIL, on_level_fail, self)
+    iapservice.on_purchase_end:subscribe(on_iapservice_purchase_end, self)
+    adsservice.on_rewarded_close:subscribe(on_adsservice_rewarded_close, self)
+    adsservice.on_rewarded_reward:subscribe(on_adsservice_rewarded_reward, self)
+    adsservice.on_interstitial_close:subscribe(on_adsservice_interstitial_close, self)
+    adsservice.on_banner_start:subscribe(on_adsservice_banner_start, self)
+    adsservice.on_banner_refresh:subscribe(on_adsservice_banner_refresh, self)
+	adsservice.on_rewarded_paid:subscribe(on_adsservice_rewarded_paid, self)
+	adsservice.on_interstitial_paid:subscribe(on_adsservice_interstitial_paid, self)
+	adsservice.on_banner_paid:subscribe(on_adsservice_banner_paid, self)
+	events.subscribe(const.EVENTS.SEGMENTATION_COHORT_CHANGED, on_segmentation_cohort_changed, self)
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == monarch.SCREEN_TRANSITION_IN_FINISHED then
+		self.current_screen = message.screen
+	end
+end
+
+
+---@param self script.controller.analytics
+function final(self)
+	monarch.remove_listener(nil)
+	token.on_token_change:unsubscribe(on_token_change, self)
+	events.unsubscribe(const.EVENTS.LEVEL_START, on_level_start, self)
+	events.unsubscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
+	events.unsubscribe(const.EVENTS.LEVEL_FAIL, on_level_fail, self)
+	iapservice.on_purchase_end:unsubscribe(on_iapservice_purchase_end, self)
+	adsservice.on_rewarded_close:unsubscribe(on_adsservice_rewarded_close, self)
+	adsservice.on_rewarded_reward:unsubscribe(on_adsservice_rewarded_reward, self)
+	adsservice.on_interstitial_close:unsubscribe(on_adsservice_interstitial_close, self)
+	adsservice.on_banner_start:unsubscribe(on_adsservice_banner_start, self)
+	adsservice.on_banner_refresh:unsubscribe(on_adsservice_banner_refresh, self)
+	adsservice.on_rewarded_paid:unsubscribe(on_adsservice_rewarded_paid, self)
+	adsservice.on_interstitial_paid:unsubscribe(on_adsservice_interstitial_paid, self)
+	adsservice.on_banner_paid:unsubscribe(on_adsservice_banner_paid, self)
+	events.unsubscribe(const.EVENTS.SEGMENTATION_COHORT_CHANGED, on_segmentation_cohort_changed, self)
+end

@@ -1,0 +1,15 @@
+local rateus = require("fun.modules.rateus")
+local level_manager = require("example.modules.level_manager")
+
+
+local function get_current_level()
+    return level_manager.current_level().id
+end
+
+function init(self)
+    rateus.set_get_current_level(get_current_level)
+end
+
+function final(self)
+	rateus.set_get_current_level(nil)
+end

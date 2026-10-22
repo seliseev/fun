@@ -1,0 +1,105 @@
+{
+    "development": {
+        "iap": {
+            "provider": "dummy"
+        },
+        "iapservice": {
+            "products": {
+                "gold_xs": "com.example.fun.gold_xs",
+                "gold_s": "com.example.fun.gold_s",
+                "gold_m": "com.example.fun.gold_m",
+                "gold_l": "com.example.fun.gold_l",
+                "gold_xl": "com.example.fun.gold_xl",
+                "gold_xxl": "com.example.fun.gold_xxl",
+                "noads": "com.example.fun.noads"
+            }
+        },
+        "ads": {
+            "provider": "dummy"
+        },
+        "adsservice": {
+            "interstitial": {
+                "unit_id": "dummy"
+            },
+            "rewarded": {
+                "unit_id": "dummy"
+            },
+            "banner": {
+                "unit_id": "dummy"
+            }
+        },
+        "analytics": {}
+    },
+    "googleplay": {
+        "iap": {
+            "provider": "googleplay"
+        },
+        "iapservice": {
+            "products": {
+                "gold_xs": "com.example.fun.gold_xs",
+                "gold_s": "com.example.fun.gold_s",
+                "gold_m": "com.example.fun.gold_m",
+                "gold_l": "com.example.fun.gold_l",
+                "gold_xl": "com.example.fun.gold_xl",
+                "gold_xxl": "com.example.fun.gold_xxl",
+                "noads": "com.example.fun.noads"
+            }
+        },
+        "ads": {
+            "provider": "admob"
+        },
+        "adsservice": {
+            "interstitial": {
+                "unit_id": "ca-app-pub-3940256099942544/1033173712"
+            },
+            "rewarded": {
+                "unit_id": "ca-app-pub-3940256099942544/5224354917"
+            },
+            "banner": {
+                "unit_id": "ca-app-pub-3940256099942544/6300978111"
+            }
+        },
+        "analytics": {
+            "gameanalytics": {
+                "game_key": "",
+                "secret_key": "",
+                "custom_dimensions_01": "language",
+                "custom_dimensions_02": "cohort"
+            },
+            "facebook": {},
+            "firebase": {}
+        },
+        "mmp": {
+            "tenjin": {
+                "api_key": ""
+            }
+        }
+    },
+    "yandexgames": {
+        "iap": {
+            "provider": "yandexgames"
+        },
+        "iapservice": {
+            "products": {
+                "gold_xs": "com.example.fun.gold_xs",
+                "gold_s": "com.example.fun.gold_s",
+                "gold_m": "com.example.fun.gold_m",
+                "gold_l": "com.example.fun.gold_l",
+                "gold_xl": "com.example.fun.gold_xl",
+                "gold_xxl": "com.example.fun.gold_xxl",
+                "noads": "com.example.fun.noads"
+            }
+        },
+        "ads": {
+            "provider": "yandex_games"
+        },
+        "adsservice": {
+            "interstitial": {
+                "unit_id": ""
+            },
+            "rewarded": {
+                "unit_id": ""
+            }
+        }
+    }
+}

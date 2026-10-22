@@ -28,7 +28,7 @@ Defold dependencies are not transitive — the host project must provide:
 | `event.*` | [Insality/defold-event](https://github.com/Insality/defold-event) 21 |
 | `saver.*` | [Insality/defold-saver](https://github.com/Insality/defold-saver) 5 |
 | `tweener.*` | [Insality/defold-tweener](https://github.com/Insality/defold-tweener) 6 |
-| `token.*` | [Insality/defold-token](https://github.com/Insality/defold-token) |
+| `token.*` | patched [Insality/defold-token](https://github.com/Insality/defold-token) (based on tag 2, with `reason_category`/`reason_id` and `delta` in change events), vendored in `/token` of this repo. Public tags 3+ have an incompatible API |
 | `druid.*` | [Insality/druid](https://github.com/Insality/druid) 1.x |
 | `monarch.*` | [britzl/monarch](https://github.com/britzl/monarch) |
 | `stately.*` | [britzl/stately](https://github.com/britzl/stately) |
@@ -44,3 +44,21 @@ the providers selected by the target.
   `fun.on_fun_inited`.
 - Settings (`fun/ext.properties`, section `[fun]`): `target`, `gamedata_path`,
   `monarch_data_path`, `targets_data_path`. Defaults point to `/assets/*.json` in the host project.
+
+## Example
+
+The repository is a runnable Defold project, like [druid](https://github.com/Insality/druid):
+open `game.project` in the Defold editor and run it. Only `/fun` is exported as a library
+(`[library] include_dirs`), `/example` and `/token` stay in this repo.
+
+`/example` is a minimal game built on FUN:
+
+- `loader.collection` — bootstrap: splash → loading, loads `fun.collection` and `game.collection` via proxies,
+  registers game modules (`level_manager`, `cohorts`, `iconfinder`) before `fun.init()`.
+- `game.collection` — monarch screens (HUD, level, win, bank, settings, language, level chest, no ads,
+  rate us, popups, cheats) and controllers (ads, iap, analytics, sound, save triggers, rate us).
+- `modules/level_manager.lua` — stub of a game core: the level is completed with the "WIN" button,
+  `LEVEL_WIN` drives the level chest, win rewards, interstitials and cohorts.
+- `assets/` — `gamedata.json`, `targets.json` (target `development` uses dummy ads and IAP providers,
+  other targets contain placeholders only), `monarch.json`, localization.
+

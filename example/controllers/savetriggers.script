@@ -1,0 +1,60 @@
+local log = require("fun.libs.log")
+local events = require("event.events")
+local token = require("token.token")
+
+local const = require("fun.const")
+local saver = require("fun.modules.saver")
+local fun_sound = require("fun.modules.sound")
+local vibrate = require("fun.modules.vibrate")
+
+local logger = log.get_logger("game.savetriggers")
+
+
+local events_to_save = {
+    const.EVENTS.LANG_UPDATE,
+    const.EVENTS.LEVEL_WIN,
+    const.EVENTS.LEVEL_RESTART,
+}
+
+
+local function on_trigger(self, ...)
+    self.is_triggered = true
+end
+
+function init(self)
+    self.is_triggered = false
+
+    for _, event_name in ipairs(events_to_save) do
+        events.subscribe(event_name, on_trigger, self)
+    end
+
+    token.on_token_change:subscribe(on_trigger, self)
+
+    fun_sound.on_sound_gain_changed:subscribe(on_trigger, self)
+    fun_sound.on_music_gain_changed:subscribe(on_trigger, self)
+    vibrate.on_vibrate_enabled_changed:subscribe(on_trigger, self)
+end
+
+function update(self, dt)
+	if self.is_triggered then
+        self.is_triggered = false
+
+        -- Сохраняем через 0.1 секунды, чтобы успели обработаться все события
+        timer.delay(0.1, false, function()
+            logger:info("Saving game state")
+            saver.save()
+        end)
+    end
+end
+
+function final(self)
+	for _, event_name in ipairs(events_to_save) do
+        events.unsubscribe(event_name, on_trigger, self)
+    end
+
+    token.on_token_change:unsubscribe(on_trigger, self)
+
+    fun_sound.on_sound_gain_changed:unsubscribe(on_trigger, self)
+    fun_sound.on_music_gain_changed:unsubscribe(on_trigger, self)
+    vibrate.on_vibrate_enabled_changed:unsubscribe(on_trigger, self)
+end

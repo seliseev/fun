@@ -1,0 +1,10 @@
+name: "menu"
+scale_along_z: 0
+embedded_instances {
+  id: "hud"
+  data: "components {\n"
+  "  id: \"hud\"\n"
+  "  component: \"/example/scenes/hud/hud.gui\"\n"
+  "}\n"
+  ""
+}

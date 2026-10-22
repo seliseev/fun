@@ -1,0 +1,53 @@
+local monarch = require "monarch.monarch"
+local druid = require("druid.druid")
+local game_const = require("example.const")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+
+local logger = require("fun.libs.log").get_logger("one_button.gui_script")
+
+--- @class game.scenes.popups.one_button.data
+--- @field title_text_key string
+--- @field description_text_key string
+--- @field button_text_key string
+--- @field button_callback function
+
+
+function init(self)
+    msg.post(".", "acquire_input_focus")
+    --- @type game.scenes.popups.one_button.data
+    local data = monarch.data(game_const.MONARCH_SCENES.POPUP_ONE_BUTTON)
+    if not data then
+        logger:error("Data not found for popup one button")
+        monarch.back()
+    end
+
+    self.druid = druid.new(self)
+
+    self.druid:new_lang_text("title", data.title_text_key)
+    self.druid:new_lang_text("description", data.description_text_key)
+    self.druid:new_lang_text("button/text", data.button_text_key)
+
+    self.druid:new_button("button/button", data.button_callback)
+
+    self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.POPUP_ONE_BUTTON)
+end
+
+function final(self)
+    self.druid:final()
+end
+
+function update(self, dt)
+    self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+    self.druid:on_message(message_id, message, sender)
+    monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+    return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+end

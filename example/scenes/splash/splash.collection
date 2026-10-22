@@ -1,0 +1,10 @@
+name: "m"
+scale_along_z: 0
+embedded_instances {
+  id: "splash"
+  data: "components {\n"
+  "  id: \"splash\"\n"
+  "  component: \"/example/scenes/splash/splash.gui\"\n"
+  "}\n"
+  ""
+}

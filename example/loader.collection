@@ -1,0 +1,38 @@
+name: "loader"
+scale_along_z: 0
+embedded_instances {
+  id: "system"
+  data: "components {\n"
+  "  id: \"script\"\n"
+  "  component: \"/example/loader.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"game_proxy\"\n"
+  "  type: \"collectionproxy\"\n"
+  "  data: \"collection: \\\"/example/game.collection\\\"\\n"
+  "\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"fun_proxy\"\n"
+  "  type: \"collectionproxy\"\n"
+  "  data: \"collection: \\\"/fun/fun.collection\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "splash"
+  data: "components {\n"
+  "  id: \"splash\"\n"
+  "  component: \"/example/scenes/splash/splash.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "loading"
+  data: "components {\n"
+  "  id: \"loading\"\n"
+  "  component: \"/example/scenes/loading/loading.gui\"\n"
+  "}\n"
+  ""
+}

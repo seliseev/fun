@@ -1,0 +1,19 @@
+local log = require("fun.libs.log")
+local monarch = require ("monarch.monarch")
+
+local game_const = require("example.const")
+
+local logger = log.get_logger("game.main")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	msg.post("#", "show")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show") then
+		monarch.show(game_const.MONARCH_SCENES.BACKGROUND, { no_stack = true })
+		monarch.show(game_const.MONARCH_SCENES.HUD)
+	end
+	
+end

@@ -1,0 +1,10 @@
+name: "levelchest"
+scale_along_z: 0
+embedded_instances {
+  id: "gui"
+  data: "components {\n"
+  "  id: \"levelchest\"\n"
+  "  component: \"/example/scenes/levelchest/levelchest.gui\"\n"
+  "}\n"
+  ""
+}

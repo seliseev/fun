@@ -1,0 +1,134 @@
+fonts {
+  name: "Headline3"
+  font: "/example/assets/fonts/Headline3.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  size {
+    x: 406.0
+    y: 90.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 812.0
+    y: 160.0
+  }
+  type: TYPE_BOX
+  texture: "ui/BankLotBackground"
+  id: "background"
+  adjust_mode: ADJUST_MODE_STRETCH
+  parent: "root"
+  inherit_alpha: true
+  slice9 {
+    x: 20.0
+    y: 20.0
+    z: 20.0
+    w: 20.0
+  }
+}
+nodes {
+  position {
+    x: -150.0
+    y: -1.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/gold_xs"
+  id: "icon"
+  xanchor: XANCHOR_LEFT
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 104.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_TEMPLATE
+  id: "button"
+  parent: "root"
+  inherit_alpha: true
+  template: "/example/widgets/button.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "button/button"
+  xanchor: XANCHOR_RIGHT
+  parent: "button"
+  overridden_fields: 12
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "button/text"
+  parent: "button/button"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: -100.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 230.0
+    y: 100.0
+  }
+  color {
+    x: 0.361
+    y: 0.235
+    z: 0.122
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "Headline3"
+  id: "value"
+  xanchor: XANCHOR_LEFT
+  pivot: PIVOT_W
+  parent: "root"
+  inherit_alpha: true
+}
+layers {
+  name: "general_bot"
+}
+layers {
+  name: "text_bot"
+}
+layers {
+  name: "general"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "general_top"
+}
+layers {
+  name: "text_top"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

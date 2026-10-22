@@ -1,0 +1,894 @@
+script: "/example/scenes/cheats/cheats_popup.gui_script"
+fonts {
+  name: "default"
+  font: "/builtins/fonts/default.font"
+}
+nodes {
+  position {
+    x: 383.0
+    y: 876.0
+  }
+  size {
+    x: 40.0
+    y: 40.0
+  }
+  type: TYPE_BOX
+  id: "btn_close"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 2.0
+    y: 2.0
+  }
+  size {
+    x: 20.0
+    y: 20.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "X"
+  font: "default"
+  id: "text1"
+  parent: "btn_close"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 12.0
+    y: 821.0
+  }
+  size {
+    x: 100.0
+    y: 20.0
+  }
+  type: TYPE_TEXT
+  text: "Level"
+  font: "default"
+  id: "LevelHeader"
+  pivot: PIVOT_W
+  layer: "general"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 43.0
+    y: 789.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "complete"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Complete"
+  font: "default"
+  id: "text"
+  parent: "complete"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 112.0
+    y: 789.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "restart"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Restart"
+  font: "default"
+  id: "restart_text"
+  parent: "restart"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 14.0
+    y: 745.0
+  }
+  size {
+    x: 100.0
+    y: 20.0
+  }
+  type: TYPE_TEXT
+  text: "Gold"
+  font: "default"
+  id: "coins_header"
+  pivot: PIVOT_W
+  layer: "general"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 44.0
+    y: 717.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "add_gold_100"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+1000"
+  font: "default"
+  id: "restart_text1"
+  parent: "add_gold_100"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 113.0
+    y: 717.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "add_gold_500"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+5000"
+  font: "default"
+  id: "restart_text2"
+  parent: "add_gold_500"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 186.0
+    y: 717.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "add_gold_1000"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+10000"
+  font: "default"
+  id: "restart_text3"
+  parent: "add_gold_1000"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 14.0
+    y: 665.0
+  }
+  size {
+    x: 100.0
+    y: 20.0
+  }
+  type: TYPE_TEXT
+  text: "Level Chest"
+  font: "default"
+  id: "levelchest_header"
+  pivot: PIVOT_W
+  layer: "general"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 44.0
+    y: 632.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "add_levelchest_1"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+1"
+  font: "default"
+  id: "restart_text4"
+  parent: "add_levelchest_1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 114.0
+    y: 632.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "add_levelchest_5"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+5"
+  font: "default"
+  id: "restart_text5"
+  parent: "add_levelchest_5"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 186.0
+    y: 632.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "add_levelchest_10"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "+10"
+  font: "default"
+  id: "restart_text6"
+  parent: "add_levelchest_10"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 14.0
+    y: 577.0
+  }
+  size {
+    x: 100.0
+    y: 20.0
+  }
+  type: TYPE_TEXT
+  text: "IAP"
+  font: "default"
+  id: "IAP"
+  pivot: PIVOT_W
+  layer: "general"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 44.0
+    y: 541.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "iap_purchased"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "purchased"
+  font: "default"
+  id: "iap_purchased_txt"
+  parent: "iap_purchased"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 113.0
+    y: 541.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "iap_cancelled"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "cancelled"
+  font: "default"
+  id: "iap_cancelled_txt"
+  parent: "iap_cancelled"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 184.0
+    y: 541.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "iap_refunded"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "refunded"
+  font: "default"
+  id: "iap_refunded_txt"
+  parent: "iap_refunded"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 254.0
+    y: 541.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "iap_unavailable"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "unavailable"
+  font: "default"
+  id: "iap_unavailable_txt"
+  parent: "iap_unavailable"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 430.0
+    y: 932.0
+  }
+  color {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+  }
+  type: TYPE_BOX
+  id: "background"
+  layer: "general_bot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 44.0
+    y: 342.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "show_rate_us"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "show rateus"
+  font: "default"
+  id: "show_rate_us_txt"
+  parent: "show_rate_us"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 41.0
+    y: 875.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.902
+    y: 0.302
+    z: 0.302
+  }
+  type: TYPE_BOX
+  id: "reset"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_TEXT
+  text: "RESET"
+  font: "default"
+  id: "reset_txt"
+  parent: "reset"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 14.0
+    y: 494.0
+  }
+  size {
+    x: 100.0
+    y: 20.0
+  }
+  type: TYPE_TEXT
+  text: "ADS"
+  font: "default"
+  id: "ADS"
+  pivot: PIVOT_W
+  layer: "general"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 44.0
+    y: 461.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "ads_rw"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "RW"
+  font: "default"
+  id: "ads_rw_txt"
+  parent: "ads_rw"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 114.0
+    y: 461.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "ads_inter"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Inter"
+  font: "default"
+  id: "ads_inter_txt"
+  parent: "ads_inter"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 253.0
+    y: 461.0
+  }
+  size {
+    x: 80.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "admob_inspector"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 80.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "AdMob\n"
+  "Inspector"
+  font: "default"
+  id: "admob_inspector_txt"
+  parent: "admob_inspector"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 352.0
+    y: 461.0
+  }
+  size {
+    x: 80.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "adinfo"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 80.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "AdInfo"
+  font: "default"
+  id: "adinfo_txt"
+  parent: "adinfo"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 54.0
+    y: 420.0
+  }
+  size {
+    x: 80.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "ads_disable"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 80.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Disable Ads"
+  font: "default"
+  id: "ads_disable_txt"
+  parent: "ads_disable"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 203.0
+    y: 420.0
+  }
+  size {
+    x: 180.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "noads"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 180.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "NoAds: True"
+  font: "default"
+  id: "noads_status"
+  parent: "noads"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 14.0
+    y: 300.0
+  }
+  size {
+    x: 100.0
+    y: 20.0
+  }
+  type: TYPE_TEXT
+  text: "ADS"
+  font: "default"
+  id: "WINDOW"
+  pivot: PIVOT_W
+  layer: "general"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 44.0
+    y: 265.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "16x9"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "16:9"
+  font: "default"
+  id: "16x9_text"
+  parent: "16x9"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 115.0
+    y: 265.0
+  }
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  type: TYPE_BOX
+  id: "9x16"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 60.0
+    y: 30.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "9:16"
+  font: "default"
+  id: "9x16_text1"
+  parent: "9x16"
+  inherit_alpha: true
+}
+layers {
+  name: "general_bot"
+}
+layers {
+  name: "text_bot"
+}
+layers {
+  name: "general"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "general_top"
+}
+layers {
+  name: "text_top"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

@@ -1,0 +1,160 @@
+local druid = require("druid.druid")
+local layout = require("druid.extended.layout")
+local monarch = require("monarch.monarch")
+
+local luax = require("fun.luax")
+local tablex = require("fun.libs.tablex")
+local adsservice = require("fun.modules.adsservice")
+local vibrate = require("fun.modules.vibrate")
+
+local game_const = require("example.const")
+local widget_counter = require("example.widgets.counter")
+local widget_safearea = require("example.widgets.safearea")
+local widget_ad = require("example.scenes.bank.widget_ad")
+local widget_lot_content = require("example.scenes.bank.widget_lot_content")
+local widget_monarch_transition = require("example.widgets.monarch_transition")
+local widget_monarch_focus_listener = require("example.widgets.monarch_focus_listener")
+local widget_accrual = require("example.widgets.accrual")
+
+---@class bank.gui_script
+---@field druid druid.instance
+---@field scroll druid.scroll
+---@field layout druid.layout
+---@field node_view userdata|nil
+---@field node_content userdata|nil
+---@field btn_back druid.button
+---@field title druid.lang_text
+---@field back_handler druid.back_handler
+---@field widget_safearea widget.safearea
+---@field widget_counter widget.counter
+---@field widget_ad widget.bank.widget_ad
+---@field widget_lot_content widget.bank.widget_lot_content
+---@field widget_transition widget.monarch_transition
+---@field widget_monarch_focus_listener widget.monarch_focus_listener
+---@field widget_accrual widget.accrual
+---@field widget_focus_listener widget.monarch_focus_listener
+
+--- Анимация лотов
+---@param self bank.gui_script
+local function animation_show_in(self)
+
+	local elements_to_animate = {}
+    
+	-- Если реклама инициализирована, то добавляем ноду рекламы в анимацию
+	if adsservice.is_initialized() then
+	    tablex.extend_array(elements_to_animate, {self.widget_ad.root})
+	end
+
+	tablex.extend_array(elements_to_animate, self.widget_lot_content.lots_nodes)
+	
+	local delay = 0
+	for _, node in pairs(elements_to_animate) do
+		self.widget_transition.transition.show_in(node, widget_monarch_transition.transitions.slide_in_right, gui.EASING_OUTBACK, 0.4, delay)
+		self.widget_transition.transition.back_out(node, widget_monarch_transition.transitions.slide_out_right, gui.EASING_INBACK, 0.4, delay)
+		delay = delay + 0.05
+	end
+end
+
+local target_node_original_scale = {}
+local function on_emit_to_target(self, token_id, number, amount, target_node)
+
+	target_node_original_scale[token_id] = target_node_original_scale[token_id] or gui.get_scale(target_node)
+
+	gui.set_scale(target_node, target_node_original_scale[token_id])
+	gui.animate(target_node, gui.PROP_SCALE, target_node_original_scale[token_id]*1.2, gui.EASING_OUTBOUNCE, 0.1, 0, function()
+		gui.set_scale(target_node, target_node_original_scale[token_id])
+	end)
+end
+
+local function on_adsservice_rewarded_close(self)
+	self.widget_accrual:accrual()
+end
+
+---@param self bank.gui_script
+local function on_focus_gained(self)
+	self.widget_accrual:accrual()
+end
+
+--- Инициализация gui_script. Стандартная функция Defold
+---@param self bank.gui_script
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.druid = druid.new(self)
+	self.node_view = luax.gui.get_node("view")
+	self.node_content = luax.gui.get_node("content")
+	
+	self.widget_safearea = self.druid:new_widget(widget_safearea, nil, nil)
+	
+	self.btn_back = self.druid:new_button("btn_back/root", function()
+		monarch.back()
+	end)
+    
+	self.back_handler = self.druid:new_back_handler(function()
+		monarch.back()
+	end)
+
+    self.title = self.druid:new_lang_text("title", "bank.title")
+	self.widget_counter = self.druid:new_widget(widget_counter, "gold", nil, game_const.TOKEN.GOLD)
+
+	self.scroll = self.druid:new_scroll(self.node_view, self.node_content)
+	self.layout = self.druid:new(layout, self.node_content, "vertical")
+
+	-- просим layout изменять размер ноды по вертикали
+	self.layout:set_hug_content(false, true)
+
+	if adsservice.is_initialized() then
+	    self.widget_ad = self.druid:new_widget(widget_ad, "ads_rw", nil, self.layout)
+	else
+		gui.set_enabled(gui.get_node("ads_rw/root"), false)
+	end
+
+    self.widget_lot_content = self.druid:new_widget(widget_lot_content, nil, nil, self.layout)
+	self.widget_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.BANK)
+	self.widget_focus_listener = self.druid:new_widget(widget_monarch_focus_listener, nil, nil, game_const.MONARCH_SCENES.BANK)
+	self.widget_focus_listener.on_focus_gained:subscribe(on_focus_gained, self)
+    
+	---@type game.widget.accrual.data
+	local accrual_data = {
+		token_targets = {
+			[game_const.TOKEN.GOLD] = self.widget_counter.root,
+		},
+		token_sound_on_target = {
+			[game_const.TOKEN.GOLD] = "coins"
+		},
+		token_sound_on_emit = {
+			[game_const.TOKEN.GOLD] = "coins",
+		},
+		token_vibrate_on_target = {
+			[game_const.TOKEN.GOLD] = vibrate.PATTERNS.SUCCESS
+		}
+	}
+	self.widget_accrual = self.druid:new_widget(widget_accrual, nil, nil, accrual_data)
+	self.widget_accrual.on_emit_to_target:subscribe(on_emit_to_target, self)
+
+    self.layout:refresh_layout()
+	self.scroll:update_view_size()
+
+	animation_show_in(self)
+
+	adsservice.on_rewarded_close:subscribe(on_adsservice_rewarded_close, self)
+end
+
+---
+---@param self bank.gui_script
+function final(self)
+	self.druid:final()
+	adsservice.on_rewarded_close:unsubscribe(on_adsservice_rewarded_close, self)
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+	monarch.on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end

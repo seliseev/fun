@@ -1,0 +1,10 @@
+name: "m"
+scale_along_z: 0
+embedded_instances {
+  id: "monarch"
+  data: "components {\n"
+  "  id: \"win\"\n"
+  "  component: \"/example/scenes/win/win.gui\"\n"
+  "}\n"
+  ""
+}

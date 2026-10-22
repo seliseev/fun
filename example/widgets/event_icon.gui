@@ -1,0 +1,100 @@
+fonts {
+  name: "Caption2"
+  font: "/example/assets/fonts/Caption2.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  size {
+    x: 74.0
+    y: 81.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: -28.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/event_text_back"
+  id: "text_background"
+  parent: "root"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 140.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "<text>"
+  font: "Caption2"
+  id: "text"
+  parent: "text_background"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 11.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/event_icon_back"
+  id: "icon_background"
+  parent: "root"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -8.0
+  }
+  scale {
+    x: 1.2
+    y: 1.2
+  }
+  type: TYPE_BOX
+  texture: "ui/LevelChest"
+  id: "icon"
+  parent: "icon_background"
+  layer: "general"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+layers {
+  name: "general_bot"
+}
+layers {
+  name: "text_bot"
+}
+layers {
+  name: "general"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "general_top"
+}
+layers {
+  name: "text_top"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

@@ -1,0 +1,410 @@
+script: "/example/scenes/noads/noads.gui_script"
+fonts {
+  name: "Headline2"
+  font: "/example/assets/fonts/Headline2.font"
+}
+fonts {
+  name: "Subtitle2"
+  font: "/example/assets/fonts/Subtitle2.font"
+}
+fonts {
+  name: "Subtitle1"
+  font: "/example/assets/fonts/Subtitle1.font"
+}
+fonts {
+  name: "Caption2"
+  font: "/example/assets/fonts/Caption2.font"
+}
+textures {
+  name: "ui"
+  texture: "/example/assets/ui.atlas"
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 430.0
+    y: 932.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "background"
+  adjust_mode: ADJUST_MODE_STRETCH
+  layer: "general_bot"
+  inherit_alpha: true
+  alpha: 0.8
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 430.0
+    y: 932.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "root"
+  adjust_mode: ADJUST_MODE_STRETCH
+  layer: "general_bot"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "N_Anchor"
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_N
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -215.0
+    y: 466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "NW_Anchor"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_NW
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 215.0
+    y: 466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "NE_Anchor"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_NE
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 215.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "E_Anchor"
+  xanchor: XANCHOR_RIGHT
+  pivot: PIVOT_E
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 215.0
+    y: -466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "SE_Anchor"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_BOTTOM
+  pivot: PIVOT_SE
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: -466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "S_Anchor"
+  yanchor: YANCHOR_BOTTOM
+  pivot: PIVOT_S
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -215.0
+    y: -466.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "SW_Anchor"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_BOTTOM
+  pivot: PIVOT_SW
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: -215.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "W_Anchor"
+  xanchor: XANCHOR_LEFT
+  pivot: PIVOT_W
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "CENTER_Anchor"
+  parent: "root"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 764.0
+    y: 1328.0
+  }
+  type: TYPE_BOX
+  texture: "ui/Popup"
+  id: "window"
+  parent: "CENTER_Anchor"
+  layer: "general"
+  inherit_alpha: true
+  slice9 {
+    x: 50.0
+    y: 50.0
+    z: 50.0
+    w: 50.0
+  }
+}
+nodes {
+  size {
+    x: 760.0
+    y: 1324.0
+  }
+  color {
+    x: 0.231
+    y: 0.647
+    z: 0.973
+  }
+  type: TYPE_BOX
+  texture: "ui/Popup"
+  id: "blue"
+  parent: "window"
+  layer: "general"
+  inherit_alpha: true
+  slice9 {
+    x: 50.0
+    y: 50.0
+    z: 50.0
+    w: 50.0
+  }
+}
+nodes {
+  position {
+    y: 57.0
+  }
+  type: TYPE_BOX
+  texture: "ui/noads_image"
+  id: "noads"
+  parent: "CENTER_Anchor"
+  layer: "general_top"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 235.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 660.0
+    y: 150.0
+  }
+  type: TYPE_TEXT
+  text: "REMOVE ADS"
+  font: "Headline2"
+  id: "title"
+  parent: "CENTER_Anchor"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -94.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 600.0
+    y: 180.0
+  }
+  type: TYPE_TEXT
+  text: "\320\241\320\276\320\262\320\265\321\200\321\210\320\270\321\202\320\265 \321\215\321\202\321\203 \320\277\320\276\320\272\321\203\320\277\320\272\321\203,\n"
+  "\321\207\321\202\320\276\320\261\321\213 \320\275\320\260\320\262\321\201\320\265\320\263\320\264\320\260 \321\203\320\261\321\200\320\260\321\202\321\214 \321\200\320\265\320\272\320\273\320\260\320\274\321\203!"
+  font: "Subtitle2"
+  id: "description"
+  line_break: true
+  parent: "CENTER_Anchor"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -138.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 600.0
+    y: 180.0
+  }
+  color {
+    x: 0.902
+    y: 0.902
+    z: 0.902
+  }
+  type: TYPE_TEXT
+  text: "\320\222\320\270\320\264\320\265\320\276 \321\201 \320\275\320\260\320\263\321\200\320\260\320\264\320\260\320\274\320\270 \320\277\320\276-\320\277\321\200\320\265\320\266\320\275\320\265\320\274\321\203\n"
+  "\320\264\320\276\321\201\321\202\321\203\320\277\320\275\321\213 \320\264\320\260\320\266\320\265 \320\277\320\276\321\201\320\273\320\265 \320\277\320\276\320\272\321\203\320\277\320\272\320\270."
+  font: "Caption2"
+  id: "description1"
+  line_break: true
+  parent: "CENTER_Anchor"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -279.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 500.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "NO, THANKS"
+  font: "Subtitle1"
+  id: "close"
+  parent: "CENTER_Anchor"
+  layer: "text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -217.0
+  }
+  type: TYPE_TEMPLATE
+  id: "buy"
+  parent: "CENTER_Anchor"
+  layer: "general"
+  inherit_alpha: true
+  template: "/example/widgets/button.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "buy/button"
+  parent: "buy"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "buy/text"
+  parent: "buy/button"
+  template_node_child: true
+}
+layers {
+  name: "general_bot"
+}
+layers {
+  name: "text_bot"
+}
+layers {
+  name: "general"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "general_top"
+}
+layers {
+  name: "text_top"
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
