@@ -8,7 +8,8 @@ dependencies#3 = https://github.com/Insality/defold-tweener/archive/refs/tags/6.
 dependencies#4 = https://github.com/britzl/stately/archive/refs/heads/master.zip
 dependencies#5 = https://github.com/indiesoftby/defold-yagames/archive/refs/tags/0.19.0.zip
 dependencies#6 = https://github.com/Insality/druid/archive/refs/tags/1.4.0.zip
-dependencies#7 = https://github.com/britzl/defold-orthographic/archive/master.zip
+dependencies#7 = https://github.com/Insality/defold-token/archive/refs/tags/9.zip
+dependencies#8 = https://github.com/britzl/defold-orthographic/archive/master.zip
 
 [library]
 include_dirs = fun

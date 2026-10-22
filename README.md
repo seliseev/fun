@@ -28,7 +28,7 @@ Defold dependencies are not transitive — the host project must provide:
 | `event.*` | [Insality/defold-event](https://github.com/Insality/defold-event) 21 |
 | `saver.*` | [Insality/defold-saver](https://github.com/Insality/defold-saver) 5 |
 | `tweener.*` | [Insality/defold-tweener](https://github.com/Insality/defold-tweener) 6 |
-| `token.*` | patched [Insality/defold-token](https://github.com/Insality/defold-token) (based on tag 2, with `reason_category`/`reason_id` and `delta` in change events), vendored in `/token` of this repo. Public tags 3+ have an incompatible API |
+| `token.*` | [Insality/defold-token](https://github.com/Insality/defold-token) 9 |
 | `druid.*` | [Insality/druid](https://github.com/Insality/druid) 1.x |
 | `monarch.*` | [britzl/monarch](https://github.com/britzl/monarch) |
 | `stately.*` | [britzl/stately](https://github.com/britzl/stately) |
@@ -42,6 +42,9 @@ the providers selected by the target.
 - Add `/fun/fun.collection` (via a collection proxy or directly) to the bootstrap collection.
 - Register game modules with `fun.register_module(name, module)` before init, wait for
   `fun.on_fun_inited`.
+- Work with currencies through `fun.modules.wallet` (container `wallet` of defold-token). Subscribe to
+  `wallet.on_change(token_id, amount, delta, reason_category, reason_id)` instead of `token.on_token_change`:
+  wallet passes `reason_category`/`reason_id` to defold-token as one `reason` table.
 - Settings (`fun/ext.properties`, section `[fun]`): `target`, `gamedata_path`,
   `monarch_data_path`, `targets_data_path`. Defaults point to `/assets/*.json` in the host project.
 
@@ -49,7 +52,7 @@ the providers selected by the target.
 
 The repository is a runnable Defold project, like [druid](https://github.com/Insality/druid):
 open `game.project` in the Defold editor and run it. Only `/fun` is exported as a library
-(`[library] include_dirs`), `/example` and `/token` stay in this repo.
+(`[library] include_dirs`), `/example` stays in this repo.
 
 `/example` is a minimal game built on FUN:
 

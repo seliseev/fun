@@ -1,6 +1,6 @@
 local log = require("fun.libs.log")
 local events = require("event.events")
-local token = require("token.token")
+local wallet = require("fun.modules.wallet")
 
 local const = require("fun.const")
 local saver = require("fun.modules.saver")
@@ -28,7 +28,7 @@ function init(self)
         events.subscribe(event_name, on_trigger, self)
     end
 
-    token.on_token_change:subscribe(on_trigger, self)
+    wallet.on_change:subscribe(on_trigger, self)
 
     fun_sound.on_sound_gain_changed:subscribe(on_trigger, self)
     fun_sound.on_music_gain_changed:subscribe(on_trigger, self)
@@ -52,7 +52,7 @@ function final(self)
         events.unsubscribe(event_name, on_trigger, self)
     end
 
-    token.on_token_change:unsubscribe(on_trigger, self)
+    wallet.on_change:unsubscribe(on_trigger, self)
 
     fun_sound.on_sound_gain_changed:unsubscribe(on_trigger, self)
     fun_sound.on_music_gain_changed:unsubscribe(on_trigger, self)

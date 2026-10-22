@@ -3,7 +3,7 @@
 
 local log = require("fun.libs.log")
 local events = require("event.events")
-local token = require("token.token")
+local wallet = require("fun.modules.wallet")
 local monarch = require("monarch.monarch")
 
 local const = require("fun.const")
@@ -47,14 +47,13 @@ end
 
 --- Обработка события изменения токена
 ---@param self script.controller.analytics
----@param container_id string
 ---@param token_id string
 ---@param amount number
 ---@param delta number
 ---@param reason_category string|nil
 ---@param reason_id string|nil
-local function on_token_change(self, container_id, token_id, amount, delta, reason_category, reason_id)
-	logger:info("Token changed", {container_id = container_id, token_id = token_id, amount = amount, delta = delta, reason_category = reason_category, reason_id = reason_id})
+local function on_token_change(self, token_id, amount, delta, reason_category, reason_id)
+	logger:info("Token changed", {token_id = token_id, amount = amount, delta = delta, reason_category = reason_category, reason_id = reason_id})
     
 	if delta > 0 then
 	    analytics.resource_added(token_id, delta, reason_category, reason_id)
@@ -136,7 +135,7 @@ function init(self)
 
 
 	--- подписываемся на все необходимые события
-	token.on_token_change:subscribe(on_token_change, self)
+	wallet.on_change:subscribe(on_token_change, self)
 	events.subscribe(const.EVENTS.LEVEL_START, on_level_start, self)
 	events.subscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
 	events.subscribe(const.EVENTS.LEVEL_FAIL, on_level_fail, self)
@@ -163,7 +162,7 @@ end
 ---@param self script.controller.analytics
 function final(self)
 	monarch.remove_listener(nil)
-	token.on_token_change:unsubscribe(on_token_change, self)
+	wallet.on_change:unsubscribe(on_token_change, self)
 	events.unsubscribe(const.EVENTS.LEVEL_START, on_level_start, self)
 	events.unsubscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
 	events.unsubscribe(const.EVENTS.LEVEL_FAIL, on_level_fail, self)
