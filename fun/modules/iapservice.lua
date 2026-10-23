@@ -32,7 +32,7 @@ local logger = log.get_logger("fun.iapservice")
 --- @field subscribe fun(_, callback: fun(lot: fun.iapservice.lot, transaction: fun.iap.transaction, metadata: fun.iapservice.runtime.metadata), _)
 
 --- @class fun.iapservice.events.on_purchase_end: event
---- @field trigger fun(_, success: boolean, lot: fun.iapservice.lot|nil, transaction: fun.iap.transaction, metadata: fun.iapservice.runtime.metadata, error: table|nil)
+--- @field trigger fun(_, success: boolean, lot: fun.iapservice.lot|nil, transaction: fun.iap.transaction|nil, metadata: fun.iapservice.runtime.metadata|nil, error: table|nil)
 --- @field subscribe fun(_, callback: fun(success: boolean, lot: fun.iapservice.lot, transaction: fun.iap.transaction, metadata: fun.iapservice.runtime.metadata, error: table|nil), _)
 
 --- @class fun.iapservice.events.on_purchase_cancelled: event
@@ -227,9 +227,18 @@ end
 
 
 --- Обработка события непроверенной покупки
+--- Награду не выдаём, но покупку завершаем неуспешно: иначе игра ждёт on_purchase_end вечно,
+--- а лот остаётся в реестре запущенных покупок и его нельзя купить снова
 ---@param transaction fun.iap.transaction
 local function on_purchase_unverified(transaction)
     logger:info("Purchase unverified", {transaction = transaction})
+
+    local sku = M.get_sku_for_product_id(transaction.product_id)
+    local metadata = sku and M.runtime.purchases_metadata[sku]
+    if sku then
+        M.runtime.purchases_metadata[sku] = nil
+    end
+    M.on_purchase_end:trigger(false, nil, transaction, metadata, {reason = "unverified"})
 end
 
 local function on_purchase_error(error)
@@ -238,6 +247,9 @@ local function on_purchase_error(error)
     --- reason = 1 means "user cancelled purchase"
     if error.reason == 1 then
         M.on_purchase_cancelled:trigger()
+    else
+        -- Транзакции нет, но игра ждёт конца покупки: завершаем её неуспешно
+        M.on_purchase_end:trigger(false, nil, nil, nil, error)
     end
 
     -- в случае ошибки мы не знаем какая именно транзакция сломалась, поэтому очищаем реестр запущенных покупок
