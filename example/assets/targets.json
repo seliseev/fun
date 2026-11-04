@@ -76,6 +76,7 @@
         }
     },
     "yandexgames": {
+        "yagames": {},
         "iap": {
             "provider": "yandexgames"
         },

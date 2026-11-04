@@ -15,6 +15,7 @@ local log = require("fun.libs.log")
 local saver = require("fun.modules.saver")
 local fun_sound = require("fun.modules.sound")
 local lang = require("fun.modules.lang")
+local target = require("fun.modules.target")
 
 local logger = log.get_logger("fun.yagames")
 
@@ -346,6 +347,13 @@ end
 ------------------------------------------------
 
 function M.fun_pre_init()
+    -- Интеграция включается только для target'ов с секцией "yagames" в targets.json,
+    -- иначе мок SDK на других платформах сыплет в лог
+    if not target.has_module("yagames") then
+        logger:debug("\"yagames\" is not configured for current target, integration disabled")
+        return
+    end
+
     if not yagames then
         logger:info("yagames extension is not available on this platform, integration disabled")
         return

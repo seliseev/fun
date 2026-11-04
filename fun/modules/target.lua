@@ -29,6 +29,13 @@ function M.get_current_target_name()
     return M.runtime.name
 end
 
+--- Есть ли секция модуля в конфигурации текущего target'а. В отличие от get_module_config не пишет в лог
+---@param module_name string Имя модуля (yagames, mmp, etc)
+---@return boolean
+function M.has_module(module_name)
+    return M.runtime.target ~= nil and M.runtime.target[module_name] ~= nil
+end
+
 --- Получить конфигурацию модуля из конфигурации target'а
 ---@param module_name string Имя модуля (iap, ads, etc)
 ---@return table|nil
