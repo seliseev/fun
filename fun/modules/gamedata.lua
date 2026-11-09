@@ -14,6 +14,33 @@ local M = {}
 ---@type table|nil
 local gamedata = nil
 
+-- Хэш встроенного файла: кэш баланса с сервера действует, пока файл тот же (до новой версии игры)
+---@type string|nil
+local builtin_hash = nil
+
+-- Версия баланса с сервера в кэше; nil - только встроенный файл
+---@type string|nil
+local remote_version = nil
+
+local function get_remote_path()
+    return sys.get_save_file(sys.get_config_string("project.title"), "gamedata_remote")
+end
+
+--- Сохранить баланс с сервера. Применится со следующего запуска: модули читают конфигурацию при инициализации.
+--- Разделы data заменяют одноименные разделы встроенного файла целиком.
+---@param data table Конфигурации модулей: имя модуля → конфигурация
+---@param version string Версия баланса
+function M.set_remote(data, version)
+    sys.save(get_remote_path(), { base = builtin_hash, version = version, data = data })
+    remote_version = version
+end
+
+--- Версия баланса с сервера, сохраненного для этой версии игры; nil, если его нет
+---@return string|nil
+function M.get_remote_version()
+    return remote_version
+end
+
 --- Получить конфигурацию модуля из конфигурации gamedata
 ---@param module_name string Имя модуля (iap, ads, etc)
 ---@param default_config any|nil Значение по умолчанию, которое будет возвращено если конфигурация не найдена. Также с этой дефолтной конфигурацией сравнивается конфигурация из gamedata.json
@@ -80,6 +107,16 @@ function M.fun_pre_init()
     if not gamedata then
         logger:error("Error loading gamedata: " .. file_path)
         return
+    end
+
+    builtin_hash = hash_to_hex(hash(sys.load_resource(file_path)))
+    local ok, remote = pcall(sys.load, get_remote_path())
+    if ok and remote.base == builtin_hash and remote.data then
+        for module_name, config in pairs(remote.data) do
+            gamedata[module_name] = config
+        end
+        remote_version = remote.version
+        logger:info("Gamedata remote applied", { version = remote_version })
     end
 
     -- Логируем инициализацию gamedata
