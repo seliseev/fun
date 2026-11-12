@@ -34,6 +34,10 @@ Defold dependencies are not transitive — the host project must provide:
 | `stately.*` | [britzl/stately](https://github.com/britzl/stately) |
 | `yagames.*` | [indiesoftby/defold-yagames](https://github.com/indiesoftby/defold-yagames) 0.19.0 (mock on non-HTML5) |
 
+Vibration (`fun.modules.vibrate`) works through the optional
+[seliseev/defold-haptic](https://github.com/seliseev/defold-haptic) extension (iOS, Android, HTML5).
+Without it every vibrate call is a no-op.
+
 Store SDKs (admob, iap, firebase, facebook, gameanalytics, tenjin …) are needed only for
 the providers selected by the target. The Yandex Games integration (`fun.modules.yagames`: SDK init,
 cloud saves, pause/resume, language) runs only when the current target has a `"yagames": {}` section
