@@ -7,6 +7,8 @@ local game_const = require("example.const")
 local widget_toggle_button = require("example.widgets.toggle_button")
 local widget_monarch_transition = require("example.widgets.monarch_transition")
 
+local T = widget_monarch_transition.transitions
+
 local TEXT_KEY_TITLE = "rateus.title"
 local TEXT_KEY_DESCRIPTION = "rateus.description"
 local TEXT_KEY_NOT_NOW = "rateus.not_now"
@@ -76,6 +78,11 @@ function init(self)
     end
 
     self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.RATEUS)
+    self.monarch_transition:set("root", widget_monarch_transition.in_out(
+        { T.scale_fade_in, easing = gui.EASING_OUTBACK },
+        { T.scale_fade_out, easing = gui.EASING_INBACK }
+    ))
+    self.monarch_transition:set("background", widget_monarch_transition.in_out({ T.color_fade_in }, { T.color_fade_out }))
 end
 
 function final(self)

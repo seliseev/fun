@@ -52,7 +52,7 @@ in `targets.json`.
   `wallet.on_change(token_id, amount, delta, reason_category, reason_id)` instead of `token.on_token_change`:
   wallet passes `reason_category`/`reason_id` to defold-token as one `reason` table.
 - Settings (`fun/ext.properties`, section `[fun]`): `target`, `gamedata_path`,
-  `monarch_data_path`, `targets_data_path`. Defaults point to `/assets/*.json` in the host project.
+  `targets_data_path`. Defaults point to `/assets/*.json` in the host project.
 - Remote balance: `gamedata.set_remote(data, version)` caches sections from a server; from the next launch they
   replace the same sections of the built-in `gamedata.json`. The cache is dropped when the built-in file changes
   (new game version). `gamedata.get_remote_version()` returns the cached version.
@@ -71,6 +71,8 @@ open `game.project` in the Defold editor and run it. Only `/fun` is exported as 
   rate us, popups, cheats) and controllers (ads, iap, analytics, sound, save triggers, rate us).
 - `modules/level_manager.lua` — stub of a game core: the level is completed with the "WIN" button,
   `LEVEL_WIN` drives the level chest, win rewards, interstitials and cohorts.
+- `widgets/monarch_transition.lua` — screen transitions, declared in code in each screen's `init`:
+  `transition:set(node, steps, neighbor_screen_id?)` (see `scenes/hud/hud.gui_script`).
 - `assets/` — `gamedata.json`, `targets.json` (target `development` uses dummy ads and IAP providers,
-  other targets contain placeholders only), `monarch.json`, localization.
+  other targets contain placeholders only), localization.
 

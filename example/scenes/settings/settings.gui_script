@@ -9,6 +9,8 @@ local widget_monarch_transition = require("example.widgets.monarch_transition")
 local widget_safearea = require("example.widgets.safearea")
 local game_const = require("example.const")
 
+local T = widget_monarch_transition.transitions
+
 local TEXT_KEY_TITLE = "settings.title"
 local TEXT_KEY_LANGUAGE = "settings.language"
 
@@ -61,10 +63,8 @@ function init(self)
 
     ------ АНИМАЦИЯ ПЕРЕХОДА ------
     self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.SETTINGS)
-        self.monarch_transition:show(gui.get_node("background"), widget_monarch_transition.transitions.color_fade_in)
-        self.monarch_transition:hide(gui.get_node("background"), widget_monarch_transition.transitions.color_fade_out)
-        self.monarch_transition:show(gui.get_node("root"), widget_monarch_transition.transitions.scale_in)
-        self.monarch_transition:hide(gui.get_node("root"), widget_monarch_transition.transitions.scale_out)
+    self.monarch_transition:set("root", widget_monarch_transition.in_out({ T.scale_fade_in }, { T.scale_fade_out }))
+    self.monarch_transition:set("background", widget_monarch_transition.in_out({ T.color_fade_in }, { T.color_fade_out }))
 
     self.back_handler = self.druid:new_back_handler(function ()
         monarch.back()

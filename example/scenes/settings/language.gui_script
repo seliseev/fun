@@ -6,6 +6,8 @@ local game_const = require("example.const")
 local widget_monarch_transition = require("example.widgets.monarch_transition")
 local widget_toggle_button = require("example.widgets.toggle_button")
 
+local T = widget_monarch_transition.transitions
+
 
 ---@class settings.language.gui_script
 ---@field druid druid.instance
@@ -113,6 +115,13 @@ function init(self)
     self.data_list:set_data(data)
 
     self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.LANGUAGE)
+    self.monarch_transition:set("root", {
+        show_in = { T.slide_in_top, easing = gui.EASING_OUTBACK },
+        show_out = { T.slide_out_top },
+        back_in = { T.slide_in_top },
+        back_out = { T.slide_out_top },
+    })
+    self.monarch_transition:set("background", widget_monarch_transition.in_out({ T.color_fade_in }, { T.color_fade_out }))
 end
 
 

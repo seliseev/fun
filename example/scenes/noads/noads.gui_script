@@ -6,6 +6,8 @@ local iapevents = require("fun.modules.iap.events")
 local widget_monarch_transition = require("example.widgets.monarch_transition")
 local game_const = require("example.const")
 
+local T = widget_monarch_transition.transitions
+
 local logger = log.get_logger("game.scenes.noads")
 
 local TEXT_KEY_TITLE = "noads.title"
@@ -71,6 +73,16 @@ function init(self)
     ------- MONARCH -------
 	--- @type widget.monarch_transition
 	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.NOADS)
+	self.monarch_transition:set("background", {
+		show_in = { T.color_fade_in },
+		show_out = { T.color_fade_out },
+		back_out = { T.color_fade_out },
+	})
+	self.monarch_transition:set("root", {
+		show_in = { T.scale_fade_in },
+		show_out = { T.scale_fade_out },
+		back_out = { T.scale_fade_out },
+	})
 end
 
 function final(self)

@@ -22,6 +22,8 @@ local widget_bannersafearea = require("example.widgets.bannersafearea")
 local widget_monarch_focus_listener = require("example.widgets.monarch_focus_listener")
 local widget_accrual = require("example.widgets.accrual")
 
+local T = widget_monarch_transition.transitions
+
 
 ---@class hud.gui_script
 ---@field node_level_number userdata
@@ -174,8 +176,35 @@ function init(self)
 		gui.set_enabled(gui.get_node("noads/root"), true)
 	end
 	
-	-- Конфигурация переходов лежит в assets/monarch.json
+	-------- ПЕРЕХОДЫ --------
 	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.HUD)
+	local top_steps = widget_monarch_transition.in_out({ T.slide_in_top, duration = 0.4 }, { T.slide_out_top, duration = 0.4 })
+	local fade_steps = widget_monarch_transition.in_out({ T.fade_in }, { T.fade_out })
+	self.monarch_transition
+		:set("gold/root", top_steps)
+		:set("settings/root", top_steps)
+		:set("levelchest/root", widget_monarch_transition.in_out({ T.slide_in_right, duration = 0.4 }, { T.slide_out_right, duration = 0.4 }))
+		:set("noads/root", widget_monarch_transition.in_out(
+			{ T.slide_in_right, duration = 0.4, delay = 0.05 },
+			{ T.slide_out_right, duration = 0.4, delay = 0.05 }
+		))
+		:set("play/button", widget_monarch_transition.in_out({ T.slide_in_bottom, duration = 0.4 }, { T.slide_out_bottom, duration = 0.4 }))
+		:set("logo", fade_steps)
+		:set("level_number", fade_steps)
+		:set("level_text", fade_steps)
+	-- В банке свои счетчик золота и настройки: верхние кнопки не уезжают, а гаснут
+	local bank = game_const.MONARCH_SCENES.BANK
+	local fade_in_after_bank = { back_in = { T.fade_in, delay = 0.4 } }
+	self.monarch_transition
+		:set("gold/root", { show_out = { T.fade_out, duration = 0 }, back_in = { T.fade_in, duration = 0 } }, bank)
+		:set("settings/root", { show_out = { T.fade_out, duration = 0.4 }, back_in = { T.fade_in, duration = 0.4 } }, bank)
+		:set("logo", fade_in_after_bank, bank)
+		:set("level_number", fade_in_after_bank, bank)
+		:set("level_text", fade_in_after_bank, bank)
+	local level = game_const.MONARCH_SCENES.LEVEL
+	self.monarch_transition
+		:set("gold/root", { show_in = { T.fade_in, duration = 0 }, show_out = { T.fade_out, duration = 0 } }, level)
+		:set("settings/root", { show_in = { T.fade_in, duration = 0.4 }, show_out = { T.fade_out, duration = 0.4 } }, level)
 	self.monarch_focus_listener = self.druid:new_widget(widget_monarch_focus_listener, nil, nil, game_const.MONARCH_SCENES.HUD)
 	self.monarch_focus_listener.on_focus_gained:subscribe(on_focus_gained, self)
 

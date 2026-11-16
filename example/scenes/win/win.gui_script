@@ -13,6 +13,8 @@ local wallet = require("fun.modules.wallet")
 local game_const = require("example.const")
 local widget_monarch_transition = require("example.widgets.monarch_transition")
 
+local T = widget_monarch_transition.transitions
+
 local logger = log.get_logger("win.gui_script")
 
 local TEXT_KEY_TITLE = "win.title"
@@ -120,6 +122,7 @@ function init(self)
     -------- TRANSITION --------
     ---@type widget.monarch_transition
     self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.WIN)
+    self.monarch_transition:set("root", { show_in = { T.scale_fade_in, duration = 0.4 }, show_out = { T.scale_fade_out, duration = 0.4 } })
     self.monarch_transition.event_transition_done:subscribe(function ()
         msg.post(".", hash("play"))
     end, self)

@@ -11,6 +11,8 @@ local levelchest = require("fun.modules.levelchest")
 local widget_monarch_focus_listener = require("example.widgets.monarch_focus_listener")
 local widget_monarch_transition = require("example.widgets.monarch_transition")
 local game_const = require("example.const")
+
+local T = widget_monarch_transition.transitions
 local logger = require("fun.libs.log").get_logger("levelchest.gui_script")
 
 --- Localization keys
@@ -101,6 +103,16 @@ function init(self)
 	------- MONARCH -------
 	--- @type widget.monarch_transition
 	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.LEVEL_CHEST)
+	self.monarch_transition:set("background", {
+		show_in = { T.color_fade_in },
+		show_out = { T.color_fade_out },
+		back_out = { T.color_fade_out },
+	})
+	self.monarch_transition:set("root", {
+		show_in = { T.scale_fade_in },
+		show_out = { T.scale_fade_out },
+		back_out = { T.scale_fade_out },
+	})
 	self.monarch_focus_listener = self.druid:new_widget(widget_monarch_focus_listener, nil, nil, game_const.MONARCH_SCENES.LEVEL_CHEST)
 	self.monarch_focus_listener.on_focus_gained:subscribe(reload_chest, self)
 

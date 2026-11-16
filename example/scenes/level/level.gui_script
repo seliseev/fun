@@ -13,6 +13,8 @@ local widget_monarch_transition = require("example.widgets.monarch_transition")
 local widget_safearea = require("example.widgets.safearea")
 local widget_bannersafearea = require("example.widgets.bannersafearea")
 
+local T = widget_monarch_transition.transitions
+
 
 ---@class level.gui_script
 ---@field druid druid.instance
@@ -25,6 +27,14 @@ local widget_bannersafearea = require("example.widgets.bannersafearea")
 ---@field monarch_transition widget.monarch_transition
 
 local TEXT_BUTTON_WIN = "level.button.win"
+
+--- Шаги перехода экрана уровня: показ (show_in, back_in) и уход под другой экран (show_out), без back_out
+---@param step_in widget.monarch_transition.step
+---@param step_out widget.monarch_transition.step
+---@return widget.monarch_transition.steps
+local function level_steps(step_in, step_out)
+	return { show_in = step_in, back_in = step_in, show_out = step_out }
+end
 
 ---@param self level.gui_script
 local function on_level_win(self)
@@ -62,8 +72,18 @@ function init(self)
 
 	gui.set_text(gui.get_node("level_number"), tostring(level_manager.current_level().id))
 
-	-- Конфигурация переходов лежит в assets/monarch.json
+	-------- ПЕРЕХОДЫ --------
 	self.monarch_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.LEVEL)
+	local fade_steps = level_steps({ T.fade_in, duration = 0.4 }, { T.fade_out, duration = 0.4 })
+	self.monarch_transition
+		:set("btn_back/root", fade_steps)
+		:set("win/button", level_steps({ T.slide_in_bottom, duration = 0.4 }, { T.slide_out_bottom, duration = 0.4 }))
+		:set("level_number", fade_steps)
+	-- Из банка кнопка и номер уровня возвращаются после того, как банк уехал
+	local bank = game_const.MONARCH_SCENES.BANK
+	self.monarch_transition
+		:set("win/button", { back_in = { T.slide_in_bottom, delay = 0.4 } }, bank)
+		:set("level_number", { back_in = { T.fade_in, delay = 0.4 } }, bank)
 
 	events.subscribe(const.EVENTS.LEVEL_WIN, on_level_win, self)
 	events.trigger(const.EVENTS.LEVEL_START, level_manager.current_level())

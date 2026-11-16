@@ -16,6 +16,8 @@ local widget_monarch_transition = require("example.widgets.monarch_transition")
 local widget_monarch_focus_listener = require("example.widgets.monarch_focus_listener")
 local widget_accrual = require("example.widgets.accrual")
 
+local T = widget_monarch_transition.transitions
+
 ---@class bank.gui_script
 ---@field druid druid.instance
 ---@field scroll druid.scroll
@@ -110,6 +112,10 @@ function init(self)
 
     self.widget_lot_content = self.druid:new_widget(widget_lot_content, nil, nil, self.layout)
 	self.widget_transition = self.druid:new_widget(widget_monarch_transition, nil, nil, game_const.MONARCH_SCENES.BANK)
+	self.widget_transition
+		:set("btn_back/root", { show_in = { T.fade_in, duration = 0.4 }, back_out = { T.fade_out, duration = 0.4 } })
+		:set("gold/root", { show_in = { T.fade_in, duration = 0 }, back_out = { T.fade_out, duration = 0 } })
+		:set("title", { back_out = { T.fade_out, duration = 0 } })
 	self.widget_focus_listener = self.druid:new_widget(widget_monarch_focus_listener, nil, nil, game_const.MONARCH_SCENES.BANK)
 	self.widget_focus_listener.on_focus_gained:subscribe(on_focus_gained, self)
     

@@ -19,7 +19,6 @@ local ALL_MODULES = {
     {name = "levelchest", module = require("fun.modules.levelchest")},
     {name = "iap", module = require("fun.modules.iap.iap")},
     {name = "iapservice", module = require("fun.modules.iapservice")},
-    {name = "transitions", module = require("fun.modules.transitions")},
     {name = "ads", module = require("fun.modules.ads.ads")},
     {name = "adsservice", module = require("fun.modules.adsservice")},
     {name = "noads", module = require("fun.modules.noads")},

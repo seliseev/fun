@@ -1,6 +1,6 @@
 [project]
 title = fun
-custom_resources = /example/assets/gamedata.json,/example/assets/monarch.json,/example/assets/targets.json,/example/assets/lang
+custom_resources = /example/assets/gamedata.json,/example/assets/targets.json,/example/assets/lang
 dependencies#0 = https://github.com/britzl/monarch/archive/master.zip
 dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/21.zip
 dependencies#2 = https://github.com/Insality/defold-saver/archive/refs/tags/5.zip
@@ -60,5 +60,4 @@ storage_key = storage
 [fun]
 target = development
 gamedata_path = /example/assets/gamedata.json
-monarch_data_path = /example/assets/monarch.json
 targets_data_path = /example/assets/targets.json
