@@ -56,6 +56,11 @@ in `targets.json`.
 - Remote balance: `gamedata.set_remote(data, version)` caches sections from a server; from the next launch they
   replace the same sections of the built-in `gamedata.json`. The cache is dropped when the built-in file changes
   (new game version). `gamedata.get_remote_version()` returns the cached version.
+- Cheat panel: add `/fun/cheats/cheats.gui` to a game object above the game proxy and give it
+  `acquire_input_focus` after the proxy owner. Register items from the game with `fun.cheats.cheats`:
+  `button(tab, text, on_click)`, `value(tab, title, get, set)`, `token(tab, title, token_id)`,
+  `events(tab, list)`. Tab `general` with RESET PROGRESS (keeps `keep_keys`) is always there;
+  `enabled = false` hides the panel (autotest), `open_offset` moves the CHEATS button.
 
 ## Example
 
