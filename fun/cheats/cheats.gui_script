@@ -102,11 +102,13 @@ local function add_value(self, page, y, item)
 		local k = side < 0 and (#DELTAS / 2 + 1 - i) or (i - #DELTAS / 2) -- 1 - у поля
 		local x = side * (FIELD_WIDTH / 2 + 3 + DELTA_SIZE / 2 + (k - 1) * DELTA_STEP)
 		button(self, page.node, vmath.vector3(x, row_y, 0), vmath.vector3(DELTA_SIZE, DELTA_SIZE, 0),
-			side < 0 and MINUS or ACTION, (delta > 0 and "+" or "") .. delta, 0.9,
+			side < 0 and MINUS or ACTION, (delta > 0 and "+" or "") .. delta, 0.75,
 			function() set(item.get() + delta) end)
 	end
 	local field = box(page.node, vmath.vector3(0, row_y, 0), vmath.vector3(FIELD_WIDTH, DELTA_SIZE, 0), FIELD_COLOR)
 	local text = label(field, ZERO, "0", 1.3)
+	-- druid ужимает текст под размер ноды: размер - по полю
+	gui.set_size(text, vmath.vector3((FIELD_WIDTH - 6) / 1.3, DELTA_SIZE, 0))
 	local input = self.druid:new_input(field, text, gui.KEYBOARD_TYPE_NUMBER_PAD)
 	input:set_allowed_characters("[%d]")
 	input:set_max_length(MAX_DIGITS)
