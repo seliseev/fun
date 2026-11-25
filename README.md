@@ -53,6 +53,10 @@ in `targets.json`.
   wallet passes `reason_category`/`reason_id` to defold-token as one `reason` table.
 - Settings (`fun/ext.properties`, section `[fun]`): `target`, `gamedata_path`,
   `targets_data_path`. Defaults point to `/assets/*.json` in the host project.
+- Save migrations: `fun.modules.saver.set_migrations({ m1, m2, ... })` before FUN init. Migration N is
+  `function(game_state, logger)` and changes the raw save table in place. It runs once per save: on the local save
+  before modules bind their sections, and on cloud data (`saver.override_state`) before it is applied. Never remove
+  or reorder migrations. Cloud data may lack sections added later - those keep their local values.
 - Remote balance: `gamedata.set_remote(data, version)` caches sections from a server; from the next launch they
   replace the same sections of the built-in `gamedata.json`. The cache is dropped when the built-in file changes
   (new game version). `gamedata.get_remote_version()` returns the cached version.

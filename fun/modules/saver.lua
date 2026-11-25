@@ -4,8 +4,15 @@ local log = require("fun.libs.log")
 
 local logger = log.get_logger("fun.saver")
 
+local SAVER_KEY = sys.get_config_string("saver.saver_key", "saver")
+
+---@alias fun.saver.migration fun(game_state: table, logger: table)
+
 ---@class fun.saver
 local M = {}
+
+---@type fun.saver.migration[]
+local migrations = {}
 
 
 --- @class fun.saver.on_before_save: event - Triggered before saving the game state
@@ -19,6 +26,33 @@ M.on_before_save = event.create()   --[[@as fun.saver.on_before_save]]
 --- @field subscribe fun(_, callback: fun(), _)
 M.on_state_loaded = event.create()  --[[@as fun.saver.on_state_loaded]]
 
+
+--- Sets the save migrations. Call before FUN init (e.g. in the loader before fun.init): a new save
+--- starts at the latest version, an existing one gets the migrations it hasn't seen yet.
+--- Migration N is `function(game_state, logger)` and changes the raw save table in place: it runs before
+--- modules bind their sections (local save) or on the loaded data before it is applied (cloud save).
+--- Never remove or reorder migrations - the save stores how many have been applied.
+---@param list fun.saver.migration[]
+function M.set_migrations(list)
+    migrations = list
+    saver.set_migrations(list)
+end
+
+--- Applies the migrations the given save table hasn't seen yet and stores the new migration version in it.
+--- A table without the saver section is treated as never migrated.
+---@param game_state table
+local function apply_migrations(game_state)
+    if type(game_state[SAVER_KEY]) ~= "table" then
+        game_state[SAVER_KEY] = {}
+    end
+    local saver_state = game_state[SAVER_KEY]
+    local version = tonumber(saver_state.migration_version) or 0
+    for index = version + 1, #migrations do
+        logger:info("Applying save migration", { version = index })
+        migrations[index](game_state, logger)
+    end
+    saver_state.migration_version = math.max(version, #migrations)
+end
 
 function M.bind_save_state(table_key_id, table_reference)
     saver.bind_save_state(table_key_id, table_reference)
@@ -85,6 +119,7 @@ end
 --- Top-level sections missing in `new_state` are kept as is: an older save (e.g. cloud data from a previous
 --- game version) doesn't know about sections added later, and removing them would detach the bound tables
 --- of new modules from the game state, so their progress would never be saved again.
+--- Save migrations are applied to `new_state` first (it may come from an older game version).
 ---@param new_state table The new state to override the current game state with.
 ---@param persist boolean|nil If true, immediately writes the merged state to disk.
 function M.override_state(new_state, persist)
@@ -92,6 +127,7 @@ function M.override_state(new_state, persist)
         logger:warn("override_state: ignored, new_state is not a table")
         return
     end
+    apply_migrations(new_state)
     local current = saver.get_game_state()
     for key, value in pairs(new_state) do
         if type(value) == "table" then
@@ -119,6 +155,7 @@ end
 
 function M.fun_pre_init()
     saver.init()
+    apply_migrations(saver.get_game_state())
     saver.before_save_callback = function()
         M.on_before_save:trigger()
     end
