@@ -168,9 +168,9 @@ local function create_stats(self, top)
 	gui.set_pivot(self.stats, gui.PIVOT_NW)
 	gui.set_xanchor(self.stats, gui.ANCHOR_LEFT)
 	gui.set_yanchor(self.stats, gui.ANCHOR_TOP)
-	self.stats_text = label(self.stats, vmath.vector3(4, -3, 0), "", 0.8, gui.PIVOT_NW)
+	self.stats_text = label(self.stats, vmath.vector3(4, -3, 0), "", 0.7, gui.PIVOT_NW)
 	gui.set_line_break(self.stats_text, true)
-	gui.set_size(self.stats_text, vmath.vector3(140, 50, 0))
+	gui.set_size(self.stats_text, vmath.vector3(118 / 0.7, 50, 0))
 	self.bars = {}
 	for i = 1, BARS do
 		local bar = box(self.stats, ZERO, vmath.vector3(BAR_WIDTH, 1, 0), GREEN)
