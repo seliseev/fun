@@ -25,7 +25,7 @@ function M.bind_save_state(table_key_id, table_reference)
 end
 
 function M.get_value(key_id, default_value)
-    saver.get_value(key_id, default_value)
+    return saver.get_value(key_id, default_value)
 end
 
 ---Сохраняет значение в сохраненном файле
@@ -82,6 +82,9 @@ end
 
 --- Overrides the contents of the currently bound game state with `new_state` while keeping table references intact.
 --- After calling this, all modules that captured `M.state` references will see the updated values.
+--- Top-level sections missing in `new_state` are kept as is: an older save (e.g. cloud data from a previous
+--- game version) doesn't know about sections added later, and removing them would detach the bound tables
+--- of new modules from the game state, so their progress would never be saved again.
 ---@param new_state table The new state to override the current game state with.
 ---@param persist boolean|nil If true, immediately writes the merged state to disk.
 function M.override_state(new_state, persist)
@@ -90,7 +93,16 @@ function M.override_state(new_state, persist)
         return
     end
     local current = saver.get_game_state()
-    deep_override(current, new_state)
+    for key, value in pairs(new_state) do
+        if type(value) == "table" then
+            if type(current[key]) ~= "table" then
+                current[key] = {}
+            end
+            deep_override(current[key], value)
+        else
+            current[key] = value
+        end
+    end
     M.on_state_loaded:trigger()
     if persist then
         saver.save_game_state()
