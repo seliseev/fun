@@ -22,6 +22,9 @@ local DELTA_STEP = 43
 local FIELD_WIDTH = 74
 local MAX_DIGITS = 9
 local ZERO = vmath.vector3()
+local SELECT_ROW = 44
+local SELECT_GO_WIDTH = 96
+local CLEAR = vmath.vector4(0, 0, 0, 0)
 
 local BARS = 40
 local BAR_WIDTH = 2
@@ -61,8 +64,7 @@ end
 local function button(self, parent, pos, size, color, value, scale, on_click)
 	local node = box(parent, pos, size, color)
 	local text = label(node, ZERO, value, scale)
-	self.druid:new_button(node, on_click)
-	return node, text
+	return node, text, self.druid:new_button(node, on_click)
 end
 
 --- Строки, которые обновляются каждый кадр, пока страница открыта
@@ -161,6 +163,77 @@ local function add_events(self, page, y, item)
 	return 310
 end
 
+--- Список пунктов поверх страницы (страница прячется, ее кнопки не нажимаются)
+local function close_list(self)
+	local list = self.list
+	if not list then
+		return
+	end
+	self.list = nil
+	for _, component in ipairs(list.components) do
+		self.druid:remove(component)
+	end
+	gui.delete_node(list.view)
+	gui.set_enabled(list.page.node, true)
+end
+
+local function open_list(self, page, state)
+	close_list(self)
+	local options = state.get_options()
+	local view = box(self.content, vmath.vector3(0, -100, 0), vmath.vector3(WIDTH, self.list_height, 0), FIELD_COLOR)
+	gui.set_pivot(view, gui.PIVOT_N)
+	gui.set_clipping_mode(view, gui.CLIPPING_MODE_STENCIL)
+	local content = box(view, ZERO, vmath.vector3(WIDTH, math.max(self.list_height, #options * SELECT_ROW + 4), 0), CLEAR)
+	gui.set_pivot(content, gui.PIVOT_N)
+	local list = { view = view, page = page, components = {} }
+	for i, option in ipairs(options) do
+		local _, text, row = button(self, content, vmath.vector3(0, -2 - (i - 0.5) * SELECT_ROW, 0),
+			vmath.vector3(WIDTH - 8, SELECT_ROW - 4, 0), i == state.index and TAB_ACTIVE or TAB_IDLE, option, 1.3,
+			function()
+				state.index = i
+				close_list(self)
+			end)
+		gui.set_size(text, vmath.vector3((WIDTH - 20) / 1.3, SELECT_ROW, 0))
+		table.insert(list.components, row)
+	end
+	local scroll = self.druid:new_scroll(view, content)
+	scroll:set_horizontal_scroll(false)
+	table.insert(list.components, scroll)
+	-- Выбранный пункт - в середине списка
+	scroll:scroll_to(vmath.vector3(0, -(state.index - 0.5) * SELECT_ROW, 0), true)
+	gui.set_enabled(page.node, false)
+	self.list = list
+end
+
+local function add_select(self, page, y, item)
+	local state = {
+		index = item.get_index and item.get_index() or 1,
+		get_options = function()
+			return type(item.options) == "function" and item.options() or item.options
+		end,
+	}
+	local options = state.get_options()
+	label(page.node, vmath.vector3(-WIDTH / 2, y - 14, 0), item.title, 1.4, gui.PIVOT_W)
+	local row_y = y - 50
+	local field_width = WIDTH - SELECT_GO_WIDTH - 8
+	local _, text = button(self, page.node, vmath.vector3(-WIDTH / 2 + field_width / 2, row_y, 0),
+		vmath.vector3(field_width, SELECT_ROW, 0), FIELD_COLOR, "", 1.3, function()
+			options = state.get_options()
+			open_list(self, page, state)
+		end)
+	button(self, page.node, vmath.vector3(WIDTH / 2 - SELECT_GO_WIDTH / 2, row_y, 0),
+		vmath.vector3(SELECT_GO_WIDTH, SELECT_ROW, 0), ACTION, "GO", 1.5, function()
+			options = state.get_options()
+			if options[state.index] then
+				item.on_confirm(state.index, options[state.index])
+			end
+		end)
+	on_update(page, function()
+		gui.set_text(text, (options[state.index] or "-") .. "  v")
+	end)
+	return 90
+end
+
 --- FPS и память: левый верхний угол со сдвигом cheats.stats_offset
 local function create_stats(self, top)
 	local offset = cheats.stats_offset
@@ -204,9 +277,10 @@ local function update_stats(self, dt)
 	end
 end
 
-local ADD = { reset = add_reset, button = add_button, value = add_value, events = add_events }
+local ADD = { reset = add_reset, button = add_button, value = add_value, events = add_events, select = add_select }
 
 local function select_tab(self, page)
+	close_list(self)
 	self.page = page
 	for _, other in ipairs(self.pages) do
 		gui.set_color(other.tab, other == page and TAB_ACTIVE or TAB_IDLE)
@@ -221,6 +295,8 @@ local function build(self)
 	self.panel = box(nil, vmath.vector3(width / 2, height / 2, 0), vmath.vector3(width, height, 0), BG)
 	gui.set_adjust_mode(self.panel, gui.ADJUST_STRETCH)
 	self.content = group(nil, vmath.vector3(width / 2, height - self.inset - 40, 0))
+	-- Список select: от верха страницы до низа экрана
+	self.list_height = height - self.inset - 160
 	gui.set_yanchor(self.content, gui.ANCHOR_TOP)
 	label(self.content, vmath.vector3(-WIDTH / 2, 0, 0), "CHEATS", 2.2, gui.PIVOT_W)
 	button(self, self.content, vmath.vector3(WIDTH / 2 - 24, 0, 0), vmath.vector3(48, 48, 0), TAB_IDLE, "X", 2,
@@ -268,6 +344,9 @@ function init(self)
 			build(self)
 		end
 		self.is_open = open
+		if not open then
+			close_list(self)
+		end
 		if self.panel then
 			gui.set_enabled(self.panel, open)
 			gui.set_enabled(self.content, open)
@@ -312,7 +391,11 @@ function on_input(self, action_id, action)
 	end
 	if self.is_open and action_id == hash("key_back") then
 		if action.released then
-			self.set_open(false)
+			if self.list then
+				close_list(self)
+			else
+				self.set_open(false)
+			end
 		end
 		return true
 	end

@@ -7,6 +7,7 @@
 --- cheats.token("player", "Money", "money")
 --- cheats.value("player", "Level", get_level, set_level)
 --- cheats.events("liveops", { { title, status(), to_reward(left), get_type(), next_type() } })
+--- cheats.select("garden", "Plant", get_plant_names, function(index) go_plant(index) end, get_plant_index)
 
 local saver = require("saver.saver")
 local wallet = require("fun.modules.wallet")
@@ -73,6 +74,19 @@ end
 ---@param events table[]
 function M.events(tab_id, events)
 	table.insert(M.tab(tab_id).items, { type = "events", events = events })
+end
+
+--- Выпадающий список с кнопкой GO справа: тап по полю открывает список (с прокруткой), выбор закрывает его,
+--- GO применяет выбранный пункт
+---@param tab_id string
+---@param title string
+---@param options string[]|fun():string[] Пункты; функцию панель зовет при каждом открытии списка
+---@param on_confirm fun(index:integer, option:string)
+---@param get_index (fun():integer)|nil Пункт, выбранный при открытии панели (например, текущий)
+function M.select(tab_id, title, options, on_confirm, get_index)
+	table.insert(M.tab(tab_id).items, {
+		type = "select", title = title, options = options, on_confirm = on_confirm, get_index = get_index,
+	})
 end
 
 --- Стирает сохранение, кроме keep_keys, и перезапускает игру
