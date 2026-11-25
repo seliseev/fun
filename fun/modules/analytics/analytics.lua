@@ -211,6 +211,18 @@ function M.set_user_property(property_name, property_value)
     call_providers("set_user_property", property_name, property_value)
 end
 
+--- Произвольное игровое событие (design event): воронки и действия игрока, которых нет среди событий выше
+--- GameAnalytics: design event с eventId = name[:part1[:part2...]], params - в custom fields, value - числом.
+--- Firebase: событие name с params.
+---@param name string Имя события в snake_case, до 40 символов: "garden_stage"
+---@param params table<string, string|number|boolean>|nil Параметры события (плоская таблица)
+---@param parts (string|number)[]|nil Части eventId в GameAnalytics после name (до 4, не больше десятков значений каждая)
+---@param value number|nil Числовое значение события (GameAnalytics)
+function M.design_event(name, params, parts, value)
+    logger:debug("design_event called", { name = name, params = params, parts = parts, value = value })
+    call_providers("design_event", name, params or {}, parts or {}, value)
+end
+
 --- Логирование сообщения
 ---@param log_level string Уровень логирования
 ---@param message string Сообщение

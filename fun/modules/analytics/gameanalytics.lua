@@ -342,6 +342,35 @@ function M:progression_fail(progression_category, level)
 end
 
 
+--- Произвольное событие: design event, eventId = name:part1:part2..., params - custom fields
+---@param name string
+---@param params table<string, string|number|boolean>
+---@param parts (string|number)[]
+---@param value number|nil
+function M:design_event(name, params, parts, value)
+    if not gameanalytics then
+        logger:warn("gameanalytics extension is not available at this platform")
+        return
+    end
+
+    local event_id = name
+    for _, part in ipairs(parts) do
+        event_id = event_id .. ":" .. tostring(part)
+    end
+
+    local options = {
+        eventId = event_id,
+        customFields = json.encode(params),
+    }
+    if value then
+        options.value = value
+    end
+    gameanalytics.addDesignEvent(options)
+
+    logger:debug("design_event: event posted", { event_id = event_id, params = params, value = value })
+end
+
+
 --- Установка свойства пользователя
 --- В gameanalytics есть только 3 custom dimensions, поэтому мы ограничиваемся ими
 --- Чтобы работал этот метод, нужно добавить property_name в targets.json которым соответствует custom_dimensions_01, custom_dimensions_02, custom_dimensions_03 

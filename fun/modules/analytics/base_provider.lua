@@ -21,6 +21,7 @@ local logger = log.get_logger("fun.analytics.base_provider")
 ---@field progression_start fun(self: fun.analytics.base_provider, progression_category: string, level: integer|string)
 ---@field progression_complete fun(self: fun.analytics.base_provider, progression_category: string, level: integer|string, score: number|nil)
 ---@field progression_fail fun(self: fun.analytics.base_provider, progression_category: string, level: integer|string)
+---@field design_event fun(self: fun.analytics.base_provider, name: string, params: table, parts: table, value: number|nil)
 ---@field final fun(self: fun.analytics.base_provider)
 local M = {}
 
@@ -177,6 +178,15 @@ end
 ---@param progression_category string
 ---@param level integer|string
 function M:progression_fail(progression_category, level)
+    -- Переопределяется в дочерних классах
+end
+
+--- Произвольное игровое событие (переопределяется в дочерних классах)
+---@param name string Имя события
+---@param params table<string, string|number|boolean> Параметры события
+---@param parts (string|number)[] Части eventId в GameAnalytics после name
+---@param value number|nil Числовое значение события
+function M:design_event(name, params, parts, value)
     -- Переопределяется в дочерних классах
 end
 

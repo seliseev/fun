@@ -394,6 +394,30 @@ function M:progression_fail(progression_category, level)
 end
 
 
+--- Произвольное событие: событие name с params (части eventId GameAnalytics здесь не нужны - они дублируют params)
+---@param name string
+---@param params table<string, string|number|boolean>
+---@param parts (string|number)[]
+---@param value number|nil
+function M:design_event(name, params, parts, value)
+    if not firebase or not firebase.analytics then
+        logger:warn("firebase.analytics extension is not available")
+        return
+    end
+
+    local fields = {}
+    for key, param in pairs(params) do
+        fields[key] = type(param) == "boolean" and tostring(param) or param
+    end
+    if value then
+        fields.value = value
+    end
+    firebase.analytics.log_table(name, fields)
+
+    logger:debug("design_event: event posted", { name = name, params = fields })
+end
+
+
 --- Установка свойства пользователя
 ---@param property_name string
 ---@param property_value string|number|boolean|nil
