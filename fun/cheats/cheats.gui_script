@@ -1,4 +1,5 @@
 --- Чит-панель FUN: кнопка CHEATS поверх всех экранов, по нажатию - окно на весь экран с вкладками из fun.cheats.
+--- В debug-движке над ней - FPS, график длительности кадров и память (процесс и Lua).
 --- Все ноды создаются кодом. Ввод: объекту панели нужен acquire_input_focus после прокси игры,
 --- тогда панель получает нажатия раньше экранов. Закрытие - кнопка X или действие key_back.
 
@@ -21,6 +22,16 @@ local DELTA_STEP = 43
 local FIELD_WIDTH = 74
 local MAX_DIGITS = 9
 local ZERO = vmath.vector3()
+
+local BARS = 40
+local BAR_WIDTH = 2
+local GRAPH_HEIGHT = 16
+local FRAME_60 = 1 / 60
+local STATS_INTERVAL = 0.5
+local MB = 1024 * 1024
+local GREEN = vmath.vector4(0.3, 0.9, 0.3, 1)
+local YELLOW = vmath.vector4(1, 0.8, 0.2, 1)
+local RED = vmath.vector4(1, 0.3, 0.3, 1)
 
 local function box(parent, pos, size, color)
 	local node = gui.new_box_node(pos, size)
@@ -150,6 +161,49 @@ local function add_events(self, page, y, item)
 	return 310
 end
 
+--- FPS и память: левый верхний угол со сдвигом cheats.stats_offset
+local function create_stats(self, top)
+	local offset = cheats.stats_offset
+	self.stats = box(nil, vmath.vector3(offset.x, top + offset.y, 0), vmath.vector3(124, 46, 0), vmath.vector4(0, 0, 0, 0.6))
+	gui.set_pivot(self.stats, gui.PIVOT_NW)
+	gui.set_xanchor(self.stats, gui.ANCHOR_LEFT)
+	gui.set_yanchor(self.stats, gui.ANCHOR_TOP)
+	self.stats_text = label(self.stats, vmath.vector3(4, -3, 0), "", 0.8, gui.PIVOT_NW)
+	gui.set_line_break(self.stats_text, true)
+	gui.set_size(self.stats_text, vmath.vector3(140, 50, 0))
+	self.bars = {}
+	for i = 1, BARS do
+		local bar = box(self.stats, ZERO, vmath.vector3(BAR_WIDTH, 1, 0), GREEN)
+		gui.set_pivot(bar, gui.PIVOT_SW)
+		self.bars[i] = bar
+	end
+	self.next_bar = 1
+	self.elapsed = 0
+	self.count = 0
+end
+
+local function update_stats(self, dt)
+	-- Столбик - длительность кадра: 1/60 с - четверть высоты, 4/60 с (15 FPS) и дольше - вся высота
+	local bar = self.bars[self.next_bar]
+	gui.set_size(bar, vmath.vector3(BAR_WIDTH, math.min(GRAPH_HEIGHT, math.max(1, dt / FRAME_60 * GRAPH_HEIGHT / 4)), 0))
+	gui.set_color(bar, dt <= FRAME_60 * 1.2 and GREEN or dt <= FRAME_60 * 2 and YELLOW or RED)
+	-- Самый новый столбик справа: сдвигаем всю ленту
+	for i = 1, BARS do
+		local index = (self.next_bar + i - 1) % BARS + 1
+		gui.set_position(self.bars[index], vmath.vector3(2 + (i - 1) * (BAR_WIDTH + 1), -44, 0))
+	end
+	self.next_bar = self.next_bar % BARS + 1
+
+	self.elapsed = self.elapsed + dt
+	self.count = self.count + 1
+	if self.elapsed >= STATS_INTERVAL then
+		local fps = self.count / self.elapsed
+		self.elapsed, self.count = 0, 0
+		gui.set_text(self.stats_text, string.format("%d FPS\n%.0f MB  Lua %.1f MB", fps + 0.5,
+			profiler.get_memory_usage() / MB, collectgarbage("count") / 1024))
+	end
+end
+
 local ADD = { reset = add_reset, button = add_button, value = add_value, events = add_events }
 
 local function select_tab(self, page)
@@ -197,6 +251,10 @@ function init(self)
 	local display_height = sys.get_config_int("display.height", 960)
 	self.inset = (window.get_safe_area().inset_top or 0) * display_height / math.max(1, window_height)
 
+	if sys.get_engine_info().is_debug then
+		create_stats(self, display_height - self.inset)
+	end
+
 	local offset = cheats.open_offset
 	self.open, self.open_text = button(self, nil,
 		vmath.vector3(offset.x + 38, display_height - self.inset + offset.y - 14, 0), vmath.vector3(76, 28, 0),
@@ -229,6 +287,12 @@ function update(self, dt)
 			self.set_open(false)
 		end
 		gui.set_enabled(self.open, enabled and not self.is_open)
+	end
+	if self.stats then
+		gui.set_enabled(self.stats, enabled)
+		if enabled then
+			update_stats(self, dt)
+		end
 	end
 	self.druid:update(dt)
 	if self.is_open then

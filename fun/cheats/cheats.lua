@@ -13,12 +13,14 @@ local wallet = require("fun.modules.wallet")
 local game = require("fun.modules.game")
 
 local M = {
-	--- false - кнопки CHEATS нет (например, в тестовом режиме)
+	--- false - нет кнопки CHEATS и FPS (например, в тестовом режиме)
 	enabled = true,
 	--- Ключи сохранения, которые переживают сброс прогресса
 	keep_keys = { "saver", "fun.device" },
 	--- Кнопка CHEATS: сдвиг от левого верхнего угла безопасной зоны
-	open_offset = vmath.vector3(4, -4, 0),
+	open_offset = vmath.vector3(4, -64, 0),
+	--- FPS и память (только debug-движок): сдвиг левого верхнего угла от левого верхнего угла безопасной зоны
+	stats_offset = vmath.vector3(4, -4, 0),
 	---@type table[] { id, title, items }
 	tabs = {},
 }

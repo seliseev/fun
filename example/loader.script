@@ -85,6 +85,7 @@ end
 
 local function fun_register_modules(self)
 	fun.register_module("level_manager", require("example.modules.level_manager"))
+	require("example.cheats")
 	fun.register_module("iconfinder", require("example.modules.iconfinder"))
 	fun.register_module("cohorts", require("example.modules.cohorts"))
 
@@ -130,6 +131,8 @@ function init(self)
 	show_splash(self)
 
 	msg.post(".", "acquire_input_focus")
+	-- Чит-панель берет ввод после нас: она выше прокси игры в стеке ввода и получает нажатия раньше экранов
+	msg.post("/cheats", "acquire_input_focus")
 end
 
 

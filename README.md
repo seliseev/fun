@@ -56,11 +56,12 @@ in `targets.json`.
 - Remote balance: `gamedata.set_remote(data, version)` caches sections from a server; from the next launch they
   replace the same sections of the built-in `gamedata.json`. The cache is dropped when the built-in file changes
   (new game version). `gamedata.get_remote_version()` returns the cached version.
-- Cheat panel: add `/fun/cheats/cheats.gui` to a game object above the game proxy and give it
+- Cheat panel and FPS/memory overlay (debug engine only): add `/fun/cheats/cheats.gui` to a game object above the game proxy and give it
   `acquire_input_focus` after the proxy owner. Register items from the game with `fun.cheats.cheats`:
   `button(tab, text, on_click)`, `value(tab, title, get, set)`, `token(tab, title, token_id)`,
   `events(tab, list)`. Tab `general` with RESET PROGRESS (keeps `keep_keys`) is always there;
-  `enabled = false` hides the panel (autotest), `open_offset` moves the CHEATS button.
+  `enabled = false` hides both (autotest), `open_offset` / `stats_offset` move the CHEATS button and the FPS box.
+  Example items: `example/cheats.lua`.
 
 ## Example
 
@@ -73,7 +74,7 @@ open `game.project` in the Defold editor and run it. Only `/fun` is exported as 
 - `loader.collection` — bootstrap: splash → loading, loads `fun.collection` and `game.collection` via proxies,
   registers game modules (`level_manager`, `cohorts`, `iconfinder`) before `fun.init()`.
 - `game.collection` — monarch screens (HUD, level, win, bank, settings, language, level chest, no ads,
-  rate us, popups, cheats) and controllers (ads, iap, analytics, sound, save triggers, rate us).
+  rate us, popups) and controllers (ads, iap, analytics, sound, save triggers, rate us).
 - `modules/level_manager.lua` — stub of a game core: the level is completed with the "WIN" button,
   `LEVEL_WIN` drives the level chest, win rewards, interstitials and cohorts.
 - `widgets/monarch_transition.lua` — screen transitions, declared in code in each screen's `init`:
