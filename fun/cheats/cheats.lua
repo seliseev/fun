@@ -20,8 +20,8 @@ local M = {
 	keep_keys = { "saver", "fun.device" },
 	--- Кнопка CHEATS: сдвиг от левого верхнего угла безопасной зоны
 	open_offset = vmath.vector3(4, -64, 0),
-	--- FPS и память (только debug-движок): сдвиг левого верхнего угла от левого верхнего угла безопасной зоны
-	stats_offset = vmath.vector3(4, -4, 0),
+	--- FPS и память (только debug-движок): у левого края, верх - на stats_y от верха безопасной зоны; плашку можно перетащить
+	stats_y = -4,
 	---@type table[] { id, title, items }
 	tabs = {},
 }

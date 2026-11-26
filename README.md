@@ -64,7 +64,7 @@ in `targets.json`.
   `acquire_input_focus` after the proxy owner. Register items from the game with `fun.cheats.cheats`:
   `button(tab, text, on_click)`, `value(tab, title, get, set)`, `token(tab, title, token_id)`,
   `events(tab, list)`. Tab `general` with RESET PROGRESS (keeps `keep_keys`) is always there;
-  `enabled = false` hides both (autotest), `open_offset` / `stats_offset` move the CHEATS button and the FPS box.
+  `enabled = false` hides both (autotest), `open_offset` moves the CHEATS button, `stats_y` the FPS box (it sits at the left edge and can be dragged).
   Example items: `example/cheats.lua`.
 
 ## Example

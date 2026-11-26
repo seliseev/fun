@@ -236,10 +236,9 @@ local function add_select(self, page, y, item)
 	return 90
 end
 
---- FPS и память: левый верхний угол со сдвигом cheats.stats_offset
+--- FPS и память: вплотную к левому краю экрана, на cheats.stats_y от верха безопасной зоны; перетаскивается
 local function create_stats(self, top)
-	local offset = cheats.stats_offset
-	self.stats = box(nil, vmath.vector3(offset.x, top + offset.y, 0), vmath.vector3(124, 46, 0), vmath.vector4(0, 0, 0, 0.6))
+	self.stats = box(nil, vmath.vector3(0, top + cheats.stats_y, 0), vmath.vector3(124, 46, 0), vmath.vector4(0, 0, 0, 0.6))
 	gui.set_pivot(self.stats, gui.PIVOT_NW)
 	gui.set_xanchor(self.stats, gui.ANCHOR_LEFT)
 	gui.set_yanchor(self.stats, gui.ANCHOR_TOP)
@@ -277,6 +276,24 @@ local function update_stats(self, dt)
 		gui.set_text(self.stats_text, string.format("%d FPS\n%.0f MB  Lua %.1f MB", fps + 0.5,
 			profiler.get_memory_usage() / MB, collectgarbage("count") / 1024))
 	end
+end
+
+--- Перетаскивание плашки FPS: касание на ней не доходит до игры
+local function drag_stats(self, action)
+	if action.pressed then
+		self.dragging = gui.pick_node(self.stats, action.x, action.y)
+	elseif self.dragging then
+		-- Сдвиг в пикселях окна переводим в единицы GUI: при ADJUST_FIT масштаб - меньший из осей
+		local width, height = window.get_size()
+		local scale = math.min(width / sys.get_config_int("display.width", 640),
+			height / sys.get_config_int("display.height", 960))
+		gui.set_position(self.stats, gui.get_position(self.stats) + vmath.vector3(action.screen_dx, action.screen_dy, 0) / scale)
+		if action.released then
+			self.dragging = false
+		end
+		return true
+	end
+	return self.dragging
 end
 
 local ADD = { reset = add_reset, button = add_button, value = add_value, events = add_events, select = add_select }
@@ -399,6 +416,9 @@ function on_input(self, action_id, action)
 				self.set_open(false)
 			end
 		end
+		return true
+	end
+	if self.stats and not self.is_open and action_id == hash("touch") and drag_stats(self, action) then
 		return true
 	end
 	-- Открытая панель забирает весь ввод: экраны под ней нажатий не получают
