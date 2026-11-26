@@ -180,7 +180,7 @@ end
 local function open_list(self, page, state)
 	close_list(self)
 	local options = state.get_options()
-	local view = box(self.content, vmath.vector3(0, -100, 0), vmath.vector3(WIDTH, self.list_height, 0), FIELD_COLOR)
+	local view = box(self.content, vmath.vector3(0, -100, 0), vmath.vector3(WIDTH, self.list_height, 0), BG)
 	gui.set_pivot(view, gui.PIVOT_N)
 	gui.set_clipping_mode(view, gui.CLIPPING_MODE_STENCIL)
 	local content = box(view, ZERO, vmath.vector3(WIDTH, math.max(self.list_height, #options * SELECT_ROW + 4), 0), CLEAR)
@@ -199,8 +199,10 @@ local function open_list(self, page, state)
 	local scroll = self.druid:new_scroll(view, content)
 	scroll:set_horizontal_scroll(false)
 	table.insert(list.components, scroll)
-	-- Выбранный пункт - в середине списка
-	scroll:scroll_to(vmath.vector3(0, -(state.index - 0.5) * SELECT_ROW, 0), true)
+	-- Выбранный пункт ниже края - прокрутить к нему
+	if state.index * SELECT_ROW > self.list_height then
+		scroll:scroll_to(vmath.vector3(0, -(state.index - 0.5) * SELECT_ROW, 0), true)
+	end
 	gui.set_enabled(page.node, false)
 	self.list = list
 end
