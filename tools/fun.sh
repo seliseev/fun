@@ -37,9 +37,10 @@ find_tools() {
 		echo "$cache/tools"
 		return
 	fi
-	local tmp
-	tmp="$(mktemp -d)"
-	trap 'rm -rf "$tmp"' EXIT
+	# Без local: trap срабатывает при выходе из подоболочки $(find_tools), когда local уже нет
+	TMP_DIR="$(mktemp -d)"
+	trap 'rm -rf "$TMP_DIR"' EXIT
+	local tmp="$TMP_DIR"
 	curl -fsSL "$url" -o "$tmp/fun.zip" || { echo "fun.sh: не удалось скачать FUN ($version)" >&2; exit 1; }
 	unzip -q "$tmp/fun.zip" -d "$tmp/src"
 	local tools
