@@ -67,6 +67,12 @@ in `targets.json`.
   `enabled = false` hides both (autotest), `open_offset` moves the CHEATS button, `stats_y` the FPS box (it sits at the left edge and can be dragged).
   Example items: `example/cheats.lua`.
 
+## Tools
+
+Command-line tools for game projects (store listing and in-app products upload to Google Play, …) live in
+`tools/`, outside `include_dirs`, so they don't ship with the game. A project runs them through a copy of
+`tools/fun.sh` as `scripts/fun.sh`, at the FUN version pinned in its `game.project`: see [tools/README.md](tools/README.md).
+
 ## Example
 
 The repository is a runnable Defold project, like [druid](https://github.com/Insality/druid):
