@@ -46,3 +46,4 @@ luac.out
 /builds
 /.editor_settings
 .DS_Store
+__pycache__/

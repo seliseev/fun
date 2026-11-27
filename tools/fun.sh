@@ -73,4 +73,4 @@ if [ ! -f "$SCRIPT" ]; then
 fi
 shift
 cd "$ROOT"
-exec env FUN_PROJECT_ROOT="$ROOT" python3 "$SCRIPT" "$@"
+exec env FUN_PROJECT_ROOT="$ROOT" PYTHONDONTWRITEBYTECODE=1 python3 "$SCRIPT" "$@"
